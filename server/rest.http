@@ -1,0 +1,26 @@
+GET http://localhost:5000/multichoice
+
+###
+
+PUT http://localhost:5000/multichoice
+
+###
+
+PATCH http://localhost:5000/multichoice
+
+### POST
+
+POST http://localhost:5000/multichoice
+Content-Type: application/json
+
+{
+    "tags": "lists;loops",
+    "difficulty": 1,
+    "question_text": "What does this print?? for x in [1, 2, 3]: print(x, end='')",
+    "question_answer": "123",
+    "choices": ["1 2 3 4", "1, 2, 3", "1\n2\n3", "123"]
+}
+
+### 
+
+DELETE http://localhost:5000/multichoice
