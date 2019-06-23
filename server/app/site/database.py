@@ -1,177 +1,80 @@
 import os
 
-from app.tables import TABLES
+from bson.objectid import ObjectId
 
-import rethinkdb
+from pymongo import MongoClient
 
 
-class RethinkDB:
+TABLES = [
+    "multi_choice",
+    "dropdown",
+    "codesnippet",
+    "tracking",
+    "feedback"
+]
+
+
+class MongoDb(object):
     def __init__(self):
-        self.host = os.environ.get("RETHINKDB_HOST", "127.0.0.1")
-        self.port = os.environ.get("RETHINKDB_PORT", "28015")
-        self.database = os.environ.get("RETHINKDB_DATABASE", "slangeuib")
+        self.host = os.environ.get("MONGO_HOST")
+        if self.host is None:
+            self.host = "127.0.0.1"
 
-        self.conn = None
-        rethinkdb.set_loop_type("gevent")
+        self.port = os.environ.get("MONGO_PORT")
+        if self.port is None:
+            self.port = "28015"
 
-        with self.get_connection() as self.conn:
-            try:
-                rethinkdb.db_create(self.database).run(self.conn)
-                print("Database created")
-            except rethinkdb.RqlRuntimeError:
-                print("Database found")
+        self.database = os.environ.get("MONGO_DATABASE")
+        if self.database is None:
+            self.database = "slangeuib"
 
-    def create_tables(self):
-        created = []
+        self.client = MongoClient(f"mongodb://{self.host}:{self.port}/")
+        self.db = self.client[self.database]
 
-        for table, obj in TABLES.items():
-            if self.create_table(table, obj.primary_key):
-                created.append(table)
+    def __getattribute__(self, attr):
+        method = object.__getattribute__(self, attr)
 
-        return created
+        def wrapper(callble):
+            def func(table_name, *args, **kwargs):
+                if table_name in TABLES:
+                    callble(table_name, *args, **kwargs)
+                else:
+                    raise UserWarning(f"Table '{table_name}' is not allowed")
+            return func
 
-    def get_connection(self, connection_database=True):
-        """
-        Grab a connection to the RethinkDb server
-        """
-        if connection_database:
-            return rethinkdb.connect(
-                host=self.host, port=self.port, 
-                db=self.database
-            )
-        else:
-            return rethinkdb.connect(
-                host=self.host, port=self.port
-            )
+        if callable(method):
+            return wrapper(method)
 
-    def create_table(
-                     self,
-                     table_name: str,
-                     primary_key: str = "id",
-                     durability: str = "hard",
-                     shards: int = 1,
-                     replicas=1,
-                     primary_replica_tab=None) -> bool:
+        return method
 
-        with self.get_connection() as conn:
-            all_tables = rethinkdb.db(self.database).table_list().run(conn)
-
-            if table_name in all_tables:
-                return False
-
-            kwargs = {
-                "primary_key": primary_key,
-                "durability": durability,
-                "shards": shards,
-                "replicas": replicas
-            }
-
-            if primary_replica_tab is not None:
-                kwargs["primary_replica_tab"] = primary_replica_tab
-
-            rethinkdb.db(self.database).table_create(
-                table_name, **kwargs
-            ).run(conn)
-
-            return True
-
-    def delete(
-                self,
-                table_name: str,
-                primary_key=None,
-                durability="hard",
-                return_changes=False) -> dict:
-
-        if primary_key:
-            query = self.query(table_name).get(primary_key).delete(
-                durability=durability, return_changes=return_changes
-            )
-        else:
-            query = self.query(table_name).delete(
-                durability=durability, return_changes=return_changes
-            )
-
-        if return_changes:
-            return self.run(query, coerce=dict)
-        self.run(query)
+    def delete(self, table_name: str) -> dict:
+        ...
 
     def drop_table(self, table_name):
-        with self.get_connection() as conn:
-            all_tables = rethinkdb.db(self.database).table_list().run(conn)
+        ...
 
-            if table_name not in all_tables:
-                return False
-
-            rethinkdb.db(self.database).table_drop(table_name).run(conn)
-            return True
-
-    def query(self, table_name):
-        if table_name not in TABLES:
-            print(f"Table not declared in TABLES {table_name}")
-
-        return rethinkdb.table(table_name)
-
-    def run(self, query, *, new_connection=False,
-            connect_database=True, coerce=None):
-
-        if not new_connection:
-            try:
-                result = query.run(self.conn)
-            except rethinkdb.errors.ReqlDriverError as e:
-                if e.args[0] == "Connection is closed.":
-                    result = query.run(self.get_connection(connect_database))
-                else:
-                    raise
-
-        else:
-            result = query(self.get_connection(connect_database))
-
-        if coerce:
-            return coerce(result) if result else coerce()
-        return result
-
-    def filter(self, table_name, predicate, default=False):
-        return self.run(
-            self.query(table_name).filter(predicate, default=default),
-            coerce=list
-        )
+    def filter(self, table_name, predicate):
+        ...
 
     def get(self, table_name, key):
-        result = self.run(
-            self.query(table_name).get(key)
-        )
+        table = getattr(self.db, table_name)
 
-        return dict(result) if result else None
+    def get_all(self, table_name, *keys):
+        ...
 
-    def get_all(self, table_name, *keys, index="id"):
-        if keys:
-            return self.run(
-                self.query(table_name).get_all(*keys, index=index),
-                coerce=list
-            )
+    def insert(self, table_name, *objects):
+        if not objects:
+            return
+
+        table = getattr(self.db, table_name)
+
+        if len(objects) == 1:
+            table.insert_one(objects[0])
+
         else:
-            return self.run(
-                self.query(table_name),
-                coerce=list
-            )
+            table.insert_many(objects)
 
-    def insert(
-               self,
-               table_name,
-               *objects,
-               durability="hard",
-               return_changes=False,
-               conflict="error"):
-
-        query = self.query(table_name).insert(
-            objects, durability=durability,
-            return_changes=return_changes, conflict=conflict
-        )
-
-        return self.run(query, coerce=dict)
+        return True
 
     def map(self, table_name, func):
-        return self.run(
-            self.query(table_name).map(func),
-            coerce=list
-        )
+        ...

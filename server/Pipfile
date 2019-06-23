@@ -16,6 +16,7 @@ flask-cors = "*"
 gevent = "*"
 gevent-websocket = "*"
 rethinkdb = "<2.4"
+pymongo = "*"
 
 [requires]
 python_version = "3.7"

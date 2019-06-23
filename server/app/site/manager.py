@@ -6,14 +6,14 @@ from flask_restful import Api
 
 from .api.dropdown_endpoint import Dropdown
 from .api.multi_choice_endpoint import MultiChoice
-from .database import RethinkDB
+from .database import MongoDb
 
 
 class Manager:
     def __init__(self):
         self.app = Flask(__name__)
         self.api = Api(self.app)
-        self.db = RethinkDB()
+        self.db = MongoDb()
         self.log = logging.getLogger(__name__)
 
         self.log.debug("Manager initialized")
