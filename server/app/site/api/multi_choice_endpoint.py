@@ -6,22 +6,17 @@ from flask import request
 class MultiChoice(ApiBase):
     def get(self):
         self.manager.log.info("All multichoice questions were requested.")
-        return self.manager.db.get_all("multi_choice")
+        return self.manager.db.find("multi_choice")
 
     def post(self):
         body = request.get_json()
-        if len(self.manager.db.get_all("multi_choice")) > 0:
-            exists = self.manager.db.filter(
-                "multi_choice",
-                lambda x: x["question_text"] == body["question_text"]
-            )
-        else:
-            exists = False
+        exists = False
+
+        if len(self.manager.db.count("multi_choice")) > 0:
+            exists = self.manager.find(**body)
 
         if not exists:
-            self.manager.db.insert(
-                "multi_choice", body, conflict="update"
-            )
+            self.manager.db.insert("multi_choice", body)
 
         self.manager.log.info("Multichoice question was posted.")
         return 201

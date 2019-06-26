@@ -1,7 +1,5 @@
 import os
 
-from bson.objectid import ObjectId
-
 from pymongo import MongoClient
 
 
@@ -47,20 +45,33 @@ class MongoDb(object):
 
         return method
 
-    def delete(self, table_name: str) -> dict:
-        ...
+    def delete(self, table_name: str, **kwargs) -> dict:
+        print(self.db.slangeuib)
+        table = self.db[table_name]
+        return table.delete_one(**kwargs)        
+
+    def delete_many(self, table_name: str, **kwargs) -> dict:
+        table = getattr(self.db, table_name)
+        return table.delete_many(**kwargs)
 
     def drop_table(self, table_name):
-        ...
+        try:
+            self.db.drop_collection(table_name)
+        except:
+            return False
+        return True
 
     def filter(self, table_name, predicate):
         ...
 
-    def get(self, table_name, key):
-        table = getattr(self.db, table_name)
 
-    def get_all(self, table_name, *keys):
-        ...
+    def find_one(self, table_name, **kwargs):
+        table = getattr(self.db, table_name)
+        return table.find_one(kwargs)
+
+    def find(self, table_name, **kwargs):
+        table = getattr(self.db, table_name)
+        return table.find(**kwargs)
 
     def insert(self, table_name, *objects):
         if not objects:
@@ -69,12 +80,17 @@ class MongoDb(object):
         table = getattr(self.db, table_name)
 
         if len(objects) == 1:
-            table.insert_one(objects[0])
+            return [table.insert_one(objects[0])]
 
-        else:
-            table.insert_many(objects)
+        return table.insert_many(objects)
 
-        return True
 
-    def map(self, table_name, func):
-        ...
+    def map(self, table_name, func, **kwargs):
+        files = self.find(**kwargs)
+        return map()
+
+    def count(self, table_name, **kwargs):
+        if kwargs:
+            return self.find(**kwargs).count()
+            
+        return getattr(self.db, table_name).count()

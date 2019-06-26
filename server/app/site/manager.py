@@ -23,5 +23,4 @@ class Manager:
         MultiChoice.add(self, "/multichoice")
 
     def run(self):
-        self.db.create_tables()
         self.app.run(debug=True)
