@@ -3,10 +3,16 @@ GET http://localhost:5000/multichoice
 ###
 
 PUT http://localhost:5000/multichoice
+Content-Type: application/json
 
-###
-
-PATCH http://localhost:5000/multichoice
+{
+    "old": {
+        "_id": "5d151a91cb51365815c78cc8"
+    },
+    "new": {
+        "question_answer": "123"
+    }
+}
 
 ### POST
 

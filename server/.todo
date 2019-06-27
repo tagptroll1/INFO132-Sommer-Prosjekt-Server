@@ -1,0 +1,26 @@
+✔ Get all database functions working @started(19-06-27 20:14) @done(19-06-27 20:38) @lasted(24m45s)
+    ☐ Implement Map, Filter and Reduce, if needed
+☐ `insert` & `insert_many` Must check for duplicates based on unique constraint set for table
+    ☐ Create set of contraints for table
+        ☐ Read the constraints, and enforce them in database.py
+    ☐ `insert`
+    ☐ `inster_many`
+
+☐ REST API Endpoints
+    ☐ Dropdown 
+        ☐ GET
+        ☐ POST
+        ☐ DELETE
+        ☐ PUT
+    ✔ Multi_choice @started(19-06-27 20:53) @done(19-06-27 21:56) @lasted(1h3m20s)
+        ✔ GET @started(19-06-27 20:53) @done(19-06-27 20:58) @lasted(5m36s)
+        ✔ POST @started(19-06-27 20:58) @done(19-06-27 21:04) @lasted(6m15s)
+            ☐ Currently handles duplication logic, extract to database
+        ✔ DELETE @started(19-06-27 21:03) @done(19-06-27 21:04) @lasted(1m47s)
+            ☐ Drops table now, add parameters on what to delete
+        ✔ PUT @started(19-06-27 21:04) @done(19-06-27 21:56) @lasted(52m10s)
+    ☐ CodeSnippet
+        ☐ GET
+        ☐ POST
+        ☐ DELETE
+        ☐ PUT

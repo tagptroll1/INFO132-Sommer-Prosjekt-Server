@@ -1,5 +1,9 @@
 import os
 
+from app.decorators.database_decorators import convert_id
+
+from bson.objectid import ObjectId
+
 from pymongo import MongoClient
 
 
@@ -16,11 +20,11 @@ class MongoDb(object):
     def __init__(self):
         self.host = os.environ.get("MONGO_HOST")
         if self.host is None:
-            self.host = "127.0.0.1"
+            self.host = "localhost"
 
         self.port = os.environ.get("MONGO_PORT")
         if self.port is None:
-            self.port = "28015"
+            self.port = "27017"
 
         self.database = os.environ.get("MONGO_DATABASE")
         if self.database is None:
@@ -29,68 +33,68 @@ class MongoDb(object):
         self.client = MongoClient(f"mongodb://{self.host}:{self.port}/")
         self.db = self.client[self.database]
 
-    def __getattribute__(self, attr):
-        method = object.__getattribute__(self, attr)
-
-        def wrapper(callble):
-            def func(table_name, *args, **kwargs):
-                if table_name in TABLES:
-                    callble(table_name, *args, **kwargs)
-                else:
-                    raise UserWarning(f"Table '{table_name}' is not allowed")
-            return func
-
-        if callable(method):
-            return wrapper(method)
-
-        return method
-
+    @convert_id
     def delete(self, table_name: str, **kwargs) -> dict:
-        print(self.db.slangeuib)
         table = self.db[table_name]
-        return table.delete_one(**kwargs)        
+        return table.delete_one(kwargs)
 
+    @convert_id
     def delete_many(self, table_name: str, **kwargs) -> dict:
-        table = getattr(self.db, table_name)
-        return table.delete_many(**kwargs)
+        table = self.db[table_name]        
+        return table.delete_many(kwargs)
 
     def drop_table(self, table_name):
         try:
             self.db.drop_collection(table_name)
-        except:
+        except Exception:
             return False
         return True
 
     def filter(self, table_name, predicate):
         ...
 
-
+    @convert_id
     def find_one(self, table_name, **kwargs):
-        table = getattr(self.db, table_name)
+        table = self.db[table_name]
         return table.find_one(kwargs)
 
+    @convert_id
     def find(self, table_name, **kwargs):
-        table = getattr(self.db, table_name)
-        return table.find(**kwargs)
+        table = self.db[table_name]
+        if kwargs:
+            return table.find(kwargs)
+        return table.find()
 
     def insert(self, table_name, *objects):
         if not objects:
             return
 
-        table = getattr(self.db, table_name)
-
+        table = self.db[table_name]
         if len(objects) == 1:
-            return [table.insert_one(objects[0])]
+            table.insert_one(objects[0])
+        else:
+            table.insert_many(objects)
+        return True
 
-        return table.insert_many(objects)
+    def edit(self, table_name, old, new):
+        table = self.db[table_name]
+        if old.get("_id"):
+            old["_id"] = ObjectId(old["_id"])
 
+        table.update_one(old, {"$set": new})
+
+        old.update(new)
+        new_updated = self.find_one(table_name, **old)
+        return new_updated
+
+    def exists(self, table_name, **kwargs):
+        return self.count(table_name, **kwargs) > 0
 
     def map(self, table_name, func, **kwargs):
-        files = self.find(**kwargs)
-        return map()
+        ...
 
     def count(self, table_name, **kwargs):
         if kwargs:
-            return self.find(**kwargs).count()
-            
-        return getattr(self.db, table_name).count()
+            return self.find(table_name, **kwargs).count()
+
+        return self.db[table_name].count()
