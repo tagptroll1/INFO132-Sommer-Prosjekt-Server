@@ -1,8 +1,10 @@
-GET http://localhost:5000/multichoice
+GET http://127.0.0.1:5000/multichoice
 
-###
+### GET
 
-PUT http://localhost:5000/multichoice
+GET http://127.0.0.1:5000/multichoice
+
+PUT http://127.0.0.1:5000/multichoice
 Content-Type: application/json
 
 {
@@ -16,7 +18,7 @@ Content-Type: application/json
 
 ### POST
 
-POST http://localhost:5000/multichoice
+POST http://127.0.0.1:5000/multichoice
 Content-Type: application/json
 
 {
@@ -29,4 +31,4 @@ Content-Type: application/json
 
 ### 
 
-DELETE http://localhost:5000/multichoice
+DELETE http://127.0.0.1:5000/multichoice
