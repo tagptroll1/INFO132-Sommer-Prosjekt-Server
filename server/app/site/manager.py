@@ -5,7 +5,7 @@ from flask import Flask
 from flask_restful import Api
 
 from .api.dropdown_endpoint import Dropdown
-from .api.multi_choice_endpoint import MultiChoice
+from .api.multi_choice_endpoint import MultiChoice, MultiChoiceDelete
 from .database import MongoDb
 
 
@@ -21,6 +21,7 @@ class Manager:
     def load_api_resources(self):
         Dropdown.add(self, "/dropdown")
         MultiChoice.add(self, "/multichoice")
+        MultiChoiceDelete.add(self, "/multichoice/<id_>")
 
     def run(self):
         self.app.run(debug=True)

@@ -15,9 +15,9 @@
     ✔ Multi_choice @started(19-06-27 20:53) @done(19-06-27 21:56) @lasted(1h3m20s)
         ✔ GET @started(19-06-27 20:53) @done(19-06-27 20:58) @lasted(5m36s)
         ✔ POST @started(19-06-27 20:58) @done(19-06-27 21:04) @lasted(6m15s)
-            ☐ Currently handles duplication logic, extract to database
+            ✔ Currently handles duplication logic, extract to database @done(19-07-09 04:09)
         ✔ DELETE @started(19-06-27 21:03) @done(19-06-27 21:04) @lasted(1m47s)
-            ☐ Drops table now, add parameters on what to delete
+            ✔ Drops table now, add parameters on what to delete @done(19-07-09 04:31)
         ✔ PUT @started(19-06-27 21:04) @done(19-06-27 21:56) @lasted(52m10s)
     ☐ CodeSnippet
         ☐ GET

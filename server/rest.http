@@ -1,15 +1,15 @@
-GET http://127.0.0.1:5000/multichoice
-
 ### GET
 
 GET http://127.0.0.1:5000/multichoice
+
+###
 
 PUT http://127.0.0.1:5000/multichoice
 Content-Type: application/json
 
 {
     "old": {
-        "_id": "5d151a91cb51365815c78cc8"
+        "_id": "5d23fb5d983a862c89871a38"
     },
     "new": {
         "question_answer": "123"
@@ -31,4 +31,4 @@ Content-Type: application/json
 
 ### 
 
-DELETE http://127.0.0.1:5000/multichoice
+DELETE http://127.0.0.1:5000/multichoice/5d23fb5d983a862c89871a38

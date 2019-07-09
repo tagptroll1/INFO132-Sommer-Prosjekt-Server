@@ -1,5 +1,6 @@
 from app.decorators.api_decorators import json_serialize
 from app.site.api.ApiBase import ApiBase
+from app.site.exceptions import QuestionAlreadyExistsException
 
 from flask import request
 
@@ -15,15 +16,15 @@ class MultiChoice(ApiBase):
     @json_serialize
     def post(self):
         body = request.get_json()
-        exists = False
 
-        if self.manager.db.count(self.TABLE) > 0:
-            exists = self.manager.db.find(self.TABLE, **body)
-
-        if exists:
-            return {"message": "Already exists"}, 409
-
-        response = self.manager.db.insert(self.TABLE, body)
+        try:
+            response = self.manager.db.insert_one(self.TABLE, body)
+        except QuestionAlreadyExistsException as e:
+            print(e)
+            return {"message": e}, 409
+        except Exception as e:
+            print(e)
+            return {"message": "Internal server error"}, 500
 
         self.manager.log.info("Multichoice question was posted.")
         if response:
@@ -32,7 +33,7 @@ class MultiChoice(ApiBase):
             return {"message": "something went wrong"}, 500
 
     def delete(self):
-        return self.manager.db.drop_table(self.TABLE)
+        return {"message": "Invalid request, use /multichoice/:id"}, 400
 
     @json_serialize
     def put(self):
@@ -52,3 +53,14 @@ class MultiChoice(ApiBase):
 
         new_question = self.manager.db.edit(self.TABLE, old_record, new_record)
         return new_question
+
+
+class MultiChoiceDelete(ApiBase):
+    TABLE = "multi_choice"
+
+    def delete(self, id_):
+        delete_result = self.manager.db.delete(self.TABLE, _id=id_)
+
+        if delete_result.deleted_count:
+            return {"message": "ok"}
+        return {"message": "nothing deleted"}, 400
