@@ -19,6 +19,9 @@
         ✔ DELETE @started(19-06-27 21:03) @done(19-06-27 21:04) @lasted(1m47s)
             ✔ Drops table now, add parameters on what to delete @done(19-07-09 04:31)
         ✔ PUT @started(19-06-27 21:04) @done(19-06-27 21:56) @lasted(52m10s)
+        ✔ GET question by id @done(19-07-11 01:10)
+        ✔ GET question-set, randomized and limited by param @done(19-07-11 01:16)
+        ☐ GET question-set, randomized, limited by param and filtered by query.
     ☐ CodeSnippet
         ☐ GET
         ☐ POST
