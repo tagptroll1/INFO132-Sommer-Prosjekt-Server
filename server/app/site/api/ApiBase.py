@@ -41,6 +41,7 @@ class ApiBaseDefault(ApiBase):
         else:
             return {"message": "something went wrong"}, 500
 
+    @json_serialize
     def delete(self):
         return {f"message": "Invalid request, use /{self.TABLE}/:id"}, 400
 
@@ -65,6 +66,7 @@ class ApiBaseDefault(ApiBase):
 
 
 class ApiBaseById(ApiBase):
+    @json_serialize
     def delete(self, id_):
         delete_result = self.database.delete(self.TABLE, _id=id_)
 
