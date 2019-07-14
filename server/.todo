@@ -8,10 +8,10 @@
 
 ☐ REST API Endpoints
     ☐ Dropdown 
-        ☐ GET
-        ☐ POST
-        ☐ DELETE
-        ☐ PUT
+        ✔ GET @done(19-07-14 13:28)
+        ✔ POST @done(19-07-14 13:28)
+        ✔ DELETE @done(19-07-14 13:28)
+        ✔ PUT @done(19-07-14 13:28)
     ✔ Multi_choice @started(19-06-27 20:53) @done(19-06-27 21:56) @lasted(1h3m20s)
         ✔ GET @started(19-06-27 20:53) @done(19-06-27 20:58) @lasted(5m36s)
         ✔ POST @started(19-06-27 20:58) @done(19-06-27 21:04) @lasted(6m15s)
