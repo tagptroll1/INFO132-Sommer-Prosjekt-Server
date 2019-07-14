@@ -41,7 +41,7 @@ class MongoDb(object):
 
     @convert_id
     def delete_many(self, table_name: str, **kwargs) -> dict:
-        table = self.db[table_name]        
+        table = self.db[table_name]
         return table.delete_many(kwargs)
 
     def drop_table(self, table_name):
