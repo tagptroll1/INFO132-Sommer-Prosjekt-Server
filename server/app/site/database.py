@@ -1,6 +1,7 @@
 import os
 
 from app.decorators.database_decorators import convert_id
+from app.site.exceptions import QuestionAlreadyExistsException
 
 from bson.objectid import ObjectId
 
@@ -40,7 +41,7 @@ class MongoDb(object):
 
     @convert_id
     def delete_many(self, table_name: str, **kwargs) -> dict:
-        table = self.db[table_name]        
+        table = self.db[table_name]
         return table.delete_many(kwargs)
 
     def drop_table(self, table_name):
@@ -65,15 +66,15 @@ class MongoDb(object):
             return table.find(kwargs)
         return table.find()
 
-    def insert(self, table_name, *objects):
-        if not objects:
-            return
-
+    def insert_one(self, table_name, obj):
         table = self.db[table_name]
-        if len(objects) == 1:
-            table.insert_one(objects[0])
-        else:
-            table.insert_many(objects)
+
+        if self.find_one(table_name, **obj):
+            raise QuestionAlreadyExistsException(
+                "Question already exists.")
+
+        table.insert_one(obj)
+
         return True
 
     def edit(self, table_name, old, new):

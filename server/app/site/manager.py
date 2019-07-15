@@ -4,8 +4,12 @@ from flask import Flask
 
 from flask_restful import Api
 
-from .api.dropdown_endpoint import Dropdown
-from .api.multi_choice_endpoint import MultiChoice
+from .api.dropdown_endpoint import (
+    Dropdown, DropdownById, DropdownFilteredSet, DropdownSet
+)
+from .api.multi_choice_endpoint import (
+    MultiChoice, MultiChoiceById, MultiChoiceFilteredSet, MultiChoiceSet
+)
 from .database import MongoDb
 
 
@@ -20,7 +24,15 @@ class Manager:
 
     def load_api_resources(self):
         Dropdown.add(self, "/dropdown")
-        MultiChoice.add(self, "/multichoice")
+        DropdownById.add(self, "/dropdown/<id_>")
+        DropdownSet.add(self, "/dropdown/set/<int:limit>")
+        DropdownFilteredSet.add(self, "/dropdown/set/filter/<int:limit>")
+
+        MultiChoice.add(self, "/multi_choice")
+        MultiChoiceById.add(self, "/multi_choice/<id_>")
+        MultiChoiceSet.add(self, "/multi_choice/set/<int:limit>")
+        MultiChoiceFilteredSet.add(
+            self, "/multi_choice/set/filter/<int:limit>")
 
     def run(self):
         self.app.run(debug=True)

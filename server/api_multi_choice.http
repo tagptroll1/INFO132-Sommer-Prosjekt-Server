@@ -1,0 +1,37 @@
+### GET
+
+GET http://127.0.0.1:5000/multi_choice
+
+### PUT
+
+PUT http://127.0.0.1:5000/multi_choice
+Content-Type: application/json
+
+{
+    "old": {
+        "_id": "5d23fb5d983a862c89871a38"
+    },
+    "new": {
+        "question_answer": "123"
+    }
+}
+
+### POST
+
+POST http://127.0.0.1:5000/multi_choice
+Content-Type: application/json
+
+{
+    "tags": "dicts",
+    "difficulty": 4,
+    "question_text": "What does this print?? print({ True: 1, 1: 3, 1.0: 2 })",
+    "question_answer": "{True: 2}",
+    "choices": ["{True: 2}", "{ True: 1, 1: 3, 1.0: 2 }", "{True: 1}", "{1.0: 2}"]
+}
+
+### 
+
+DELETE http://127.0.0.1:5000/multi_choice/5d23fb5d983a862c89871a38
+
+### GET SET
+GET http://localhost:5000/multi_choice/set/2

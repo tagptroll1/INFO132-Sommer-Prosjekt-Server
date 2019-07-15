@@ -13,15 +13,21 @@ def json_serialize(func):
                 if isinstance(value, ObjectId):
                     item[key] = str(value)
 
+        def convert_List(lst):
+            for item in lst:
+                convert_ObjectId(item)
+
         if return_value is None:
             return None
 
         if isinstance(return_value, list):
-            for item in return_value:
-                convert_ObjectId(item)
+            convert_List(return_value)
         elif isinstance(return_value, tuple):
             assert len(return_value) == 2  # Assert it's (data, status) tuple
-            convert_ObjectId(return_value[0])
+            if isinstance(return_value[0], list):
+                convert_List(return_value[0])
+            else:
+                convert_ObjectId(return_value[0])
         else:
             convert_ObjectId(return_value)
 

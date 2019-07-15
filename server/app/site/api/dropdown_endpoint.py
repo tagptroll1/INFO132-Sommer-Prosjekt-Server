@@ -1,12 +1,19 @@
-from app.site.api.ApiBase import ApiBase
+from app.site.api.ApiBase import (
+    ApiBaseById, ApiBaseDefault, ApiBaseFilteredSet, ApiBaseSet
+)
 
 
-class Dropdown(ApiBase):
-    def get(self):
-        self.manager.log.info("All dropdown questions were requested")
+class Dropdown(ApiBaseDefault):
+    TABLE = "dropdown"
 
-    def post(self):
-        self.manager.log.info("Dropdown question was posted")
 
-    def delete(self):
-        ...
+class DropdownById(ApiBaseById):
+    TABLE = "dropdown"
+
+
+class DropdownSet(ApiBaseSet):
+    TABLE = "dropdown"
+
+
+class DropdownFilteredSet(ApiBaseFilteredSet):
+    TABLE = "dropdown"

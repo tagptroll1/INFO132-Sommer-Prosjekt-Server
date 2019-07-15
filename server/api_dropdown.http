@@ -1,0 +1,36 @@
+### GET
+
+GET http://127.0.0.1:5000/dropdown
+
+### PUT
+
+PUT http://127.0.0.1:5000/dropdown
+Content-Type: application/json
+
+{
+    "old": {
+        "_id": "5d23fb5d983a862c89871a38"
+    },
+    "new": {
+        "question_answer": "123"
+    }
+}
+
+### POST
+
+POST http://127.0.0.1:5000/dropdown
+Content-Type: application/json
+
+{
+    "tags": "operators",
+    "difficulty": 1,
+    "question_text": "What would make this print 0 and 5?? for x in range(6):\n\tif x __ 5: print(x)",
+    "question_answer": ">="
+}
+
+### 
+
+DELETE http://127.0.0.1:5000/dropdown/5d23fb5d983a862c89871a38
+
+### GET SET
+GET http://localhost:5000/dropdown/set/1
