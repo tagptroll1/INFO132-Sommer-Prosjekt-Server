@@ -7,5 +7,6 @@ class DropdownModel:
     tags: List
     difficulty: int
     question_text: str
+    question_code: str
     question_answer: str
     choices: List
