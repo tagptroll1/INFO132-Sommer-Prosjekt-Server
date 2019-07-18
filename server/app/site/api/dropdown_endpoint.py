@@ -1,19 +1,20 @@
 from app.site.api.ApiBase import (
     ApiBaseById, ApiBaseDefault, ApiBaseFilteredSet, ApiBaseSet
 )
+from app.site.models.dropdown import DropdownModel
 
 
 class Dropdown(ApiBaseDefault):
-    TABLE = "dropdown"
+    model = DropdownModel
 
 
 class DropdownById(ApiBaseById):
-    TABLE = "dropdown"
+    model = DropdownModel
 
 
 class DropdownSet(ApiBaseSet):
-    TABLE = "dropdown"
+    model = DropdownModel
 
 
 class DropdownFilteredSet(ApiBaseFilteredSet):
-    TABLE = "dropdown"
+    model = DropdownModel

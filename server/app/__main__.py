@@ -1,6 +1,5 @@
 from app.site.manager import Manager
 
-
 manager = Manager()
 
 if __name__ == "__main__":

@@ -1,27 +1,28 @@
 from app.site.api.ApiBase import (
     ApiBaseById, ApiBaseDefault, ApiBaseFilteredSet, ApiBaseSet
 )
+from app.site.models.multi_choice import MultiChoiceModel
 
 
 class MultiChoice(ApiBaseDefault):
     """/multi_choice"""
 
-    TABLE = "multi_choice"
+    model = MultiChoiceModel
 
 
 class MultiChoiceById(ApiBaseById):
     """/multi_choice/<id>"""
 
-    TABLE = "multi_choice"
+    model = MultiChoiceModel
 
 
 class MultiChoiceSet(ApiBaseSet):
     """/multi_choice/set/<limit>"""
 
-    TABLE = "multi_choice"
+    model = MultiChoiceModel
 
 
 class MultiChoiceFilteredSet(ApiBaseFilteredSet):
     """/multi_choice/set/filter/<limit>"""
 
-    TABLE = "multi_choice"
+    model = MultiChoiceModel

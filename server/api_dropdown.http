@@ -22,10 +22,11 @@ POST http://127.0.0.1:5000/dropdown
 Content-Type: application/json
 
 {
-    "tags": "operators",
+    "tags": ["operators"],
     "difficulty": 1,
     "question_text": "What would make this print 0 and 5?? for x in range(6):\n\tif x __ 5: print(x)",
-    "question_answer": ">="
+    "question_answer": ">=",
+    "choices": [">=", "<=", "<", ">", "=="]
 }
 
 ### 
