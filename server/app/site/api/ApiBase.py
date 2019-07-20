@@ -1,5 +1,6 @@
 import random
 import typing
+from typing import Optional
 
 from app.decorators.api_decorators import json_serialize
 from app.site.exceptions import QuestionAlreadyExistsException
@@ -11,11 +12,11 @@ from flask_restful import Resource
 
 def validate_body(body, types, post=True):
     for var, type_ in types.items():
-        if post and var not in body:
+        if post and type_ != Optional and var not in body:
             return {"message": f"{var} is a required field!"}, 400
 
         for key, value in body.items():
-            if var == key and not isinstance(value, type_):
+            if var == key and type_ != Optional and not isinstance(value, type_):
                 return {
                     "message": (
                         f"{var} must be of type {type_} not {type(value)}"
@@ -24,7 +25,7 @@ def validate_body(body, types, post=True):
 
             if key not in types:
                 return {
-                    "message": f"{key} is not a support field"
+                    "message": f"{key} is not a supported field"
                 }, 400
 
 
