@@ -9,4 +9,4 @@ class DropdownModel:
     question_text: str
     question_code: str
     question_answer: str
-    choices: List
+    alternatives: List
