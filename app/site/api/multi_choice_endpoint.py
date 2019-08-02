@@ -26,7 +26,6 @@ endpoints = {
     "/api/v1/multi_choice": MultiChoice,
     "/api/v1/multi_choice/<id_>": MultiChoiceById,
     "/api/v1/multi_choice/set/<int:limit>": MultiChoiceSet,
-    "/api/v1/multi_choice/set/filter/<int:limit>": MultiChoiceFilteredSet
 }
 
 __slots__ = [endpoints]

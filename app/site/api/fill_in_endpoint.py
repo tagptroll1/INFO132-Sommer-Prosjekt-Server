@@ -26,7 +26,6 @@ endpoints = {
     "/api/v1/fill_in": FillIn,
     "/api/v1/fill_in/<id_>": FillInById,
     "/api/v1/fill_in/set/<int:limit>": FillInSet,
-    "/api/v1/fill_in/set/filter/<int:limit>": FillInFilteredSet
 }
 
 __slots__ = [endpoints]
