@@ -22,17 +22,11 @@ class MultiChoiceSet(ApiBaseSet):
     model = MultiChoiceModel
 
 
-class MultiChoiceFilteredSet(ApiBaseFilteredSet):
-    """/multi_choice/set/filter/<limit>"""
-
-    model = MultiChoiceModel
-
-
 endpoints = {
-    "/multi_choice": MultiChoice,
-    "/multi_choice/<id_>": MultiChoiceById,
-    "/multi_choice/set/<int:limit>": MultiChoiceSet,
-    "/multi_choice/set/filter/<int:limit>": MultiChoiceFilteredSet
+    "/api/v1/multi_choice": MultiChoice,
+    "/api/v1/multi_choice/<id_>": MultiChoiceById,
+    "/api/v1/multi_choice/set/<int:limit>": MultiChoiceSet,
+    "/api/v1/multi_choice/set/filter/<int:limit>": MultiChoiceFilteredSet
 }
 
 __slots__ = [endpoints]

@@ -16,8 +16,6 @@ flask-cors = "*"
 gevent = "*"
 gevent-websocket = "*"
 pymongo = "*"
-flask-jwt-extended = "*"
-passlib = "*"
 
 [requires]
 python_version = "3.7"

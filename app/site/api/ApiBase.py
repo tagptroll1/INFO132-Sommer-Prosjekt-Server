@@ -129,27 +129,11 @@ class ApiBaseById(ApiBase):
 class ApiBaseSet(ApiBase):
     @json_serialize
     def get(self, limit):
+        args = dict(request.args)
+        print(args)
         count = self.database.count(self.model.TABLE)
         if limit > count:
             return {"message": f"Limit too high, max is: {count}"}, 400
-
-        all_entries = list(self.database.find(self.model.TABLE))
-        random.shuffle(all_entries)
-
-        return all_entries[:limit], 200
-
-
-class ApiBaseFilteredSet(ApiBase):
-    @json_serialize
-    def get(self, limit):
-        args = request.args
-
-        count = self.database.count(self.model.TABLE)
-        if limit > count:
-            return {"message": f"Limit too high, max is: {count}"}, 400
-
-        # assuming args is a dict, convert later if needed !TODO look into
-        assert isinstance(args, dict)
 
         all_entries = list(self.database.find(self.model.TABLE, **args))
         random.shuffle(all_entries)
