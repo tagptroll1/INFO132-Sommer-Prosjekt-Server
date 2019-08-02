@@ -1,10 +1,10 @@
 ### GET
 
-GET http://127.0.0.1:5000/multi_choice
+GET http://127.0.0.1:5000/api/multi_choice
 
 ### PUT
 
-PUT http://127.0.0.1:5000/multi_choice
+PUT http://127.0.0.1:5000/api/multi_choice
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ### POST
 
-POST http://127.0.0.1:5000/multi_choice
+POST http://127.0.0.1:5000/api/multi_choice
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 ### POST 2
 
-POST http://127.0.0.1:5000/multi_choice
+POST http://127.0.0.1:5000/api/multi_choice
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:5000/multi_choice/5d3df7d25c6fe4280a2cd393
+DELETE http://127.0.0.1:5000/api/multi_choice/5d3df7d25c6fe4280a2cd393
 
 ### GET SET
-GET http://localhost:5000/multi_choice/set/2
+GET http://localhost:5000/api/multi_choice/set/2

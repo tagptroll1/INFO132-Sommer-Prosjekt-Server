@@ -21,18 +21,11 @@ class DropdownSet(ApiBaseSet):
 
     model = DropdownModel
 
-
-class DropdownFilteredSet(ApiBaseFilteredSet):
-    """/dropdown/set/filter/<limit>"""
-
-    model = DropdownModel
-
-
 endpoints = {
-    "/dropdown": Dropdown,
-    "/dropdown/<id_>": DropdownById,
-    "/dropdown/set/<int:limit>": DropdownSet,
-    "/dropdown/set/filter/<int:limit>": DropdownFilteredSet
+    "/api/v1/dropdown": Dropdown,
+    "/api/v1/dropdown/<id_>": DropdownById,
+    "/api/v1/dropdown/set/<int:limit>": DropdownSet,
+    "/api/v1/dropdown/set/filter/<int:limit>": DropdownFilteredSet
 }
 
 __slots__ = [endpoints]

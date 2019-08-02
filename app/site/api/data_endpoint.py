@@ -4,13 +4,13 @@ from .ApiBase import ApiBaseDefault
 
 
 class DataEndpoint(ApiBaseDefault):
-    """/data"""
+    """/api/v1/data"""
 
     model = DataModel
 
 
 endpoints = {
-    "/data": DataEndpoint
+    "/api/v1/data": DataEndpoint
 }
 
 __slots__ = [endpoints]
