@@ -1,5 +1,5 @@
 from app.site.api.ApiBase import (
-    ApiBaseById, ApiBaseDefault, ApiBaseFilteredSet, ApiBaseSet
+    ApiBaseById, ApiBaseDefault, ApiBaseSet
 )
 from app.site.models.dropdown import DropdownModel
 
