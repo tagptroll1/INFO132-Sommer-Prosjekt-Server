@@ -24,5 +24,5 @@ class Manager:
         for endpoint in endpoints:
             self.add_from_dict(endpoint)
 
-    def run(self):
-        self.app.run(debug=True)
+    def run(self, debug):
+        self.app.run(debug=debug)

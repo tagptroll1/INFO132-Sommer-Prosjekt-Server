@@ -9,6 +9,21 @@ from flask import request
 
 from flask_restful import Resource
 
+def convert_args_value(types, args):
+    new_args = {}
+    for key, value in args.items():
+        type_ = types[key]
+
+        # The value is already a str, so don't have to check that
+        if type_ is int or type_ is bool: 
+            new_args[key] = types[key](value)
+        # Seperate value by commas if it's a list.
+        elif "," in value:
+            new_args[key] = value.split(",")
+        else:
+            new_args[key] = value
+
+    return new_args
 
 def validate_body(body, types, post=True):
     for var, type_ in types.items():
@@ -130,6 +145,9 @@ class ApiBaseSet(ApiBase):
     @json_serialize
     def get(self, limit):
         args = dict(request.args)
+        types = typing.get_type_hints(self.model)
+
+        args = convert_args_value(types, args)
         print(args)
         count = self.database.count(self.model.TABLE)
         if limit > count:
