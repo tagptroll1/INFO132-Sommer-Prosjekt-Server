@@ -49,8 +49,5 @@ Content-Type: application/json
 DELETE http://127.0.0.1:5000/api/v1/dropdown/5d4415f621c23ded5805fa4b
 
 ### GET SET
-GET http://localhost:5000/api/v1/dropdown/set/2
+GET http://localhost:5000/api/v1/dropdown/set/1?tags=operators,logic
 
-
-### GET FILTERED SET
-GET http://localhost:5000/api/v1/dropdown/set/filter/2?difficulty=2
