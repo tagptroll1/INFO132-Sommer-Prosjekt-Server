@@ -25,7 +25,6 @@ endpoints = {
     "/api/v1/dropdown": Dropdown,
     "/api/v1/dropdown/<id_>": DropdownById,
     "/api/v1/dropdown/set/<int:limit>": DropdownSet,
-    "/api/v1/dropdown/set/filter/<int:limit>": DropdownFilteredSet
 }
 
 __slots__ = [endpoints]
