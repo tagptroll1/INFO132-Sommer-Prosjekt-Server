@@ -70,6 +70,8 @@ class ApiBaseDefault(ApiBase):
         if error_or_None is not None:
             return error_or_None
 
+        body["type"] = self.model.TABLE
+
         try:
             response = self.database.insert_one(
                 self.model.TABLE, body
