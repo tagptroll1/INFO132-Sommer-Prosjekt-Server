@@ -39,7 +39,7 @@ Content-Type: application/json
     "tags": ["lists","loops"],
     "difficulty": 1,
     "question_text": "What does this print?",
-    "question_code": " for x in [1, 2, 3]: print(x, end='')",
+    "question_code": " for x in [1, 2, 3]: \n\tprint(x, end='')",
     "question_answer": "123",
     "alternatives": [
         "1 2 3 4",
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:5000/api/v1/multi_choice/5d3df7d25c6fe4280a2cd393
+DELETE http://127.0.0.1:5000/api/v1/multi_choice/5d3df83c9c7041a88fd8d0ef
 
 ### GET SET
 GET http://localhost:5000/api/v1/multi_choice/set/2

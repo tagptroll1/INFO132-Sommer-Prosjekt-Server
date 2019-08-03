@@ -9,10 +9,10 @@ Content-Type: application/json
 
 {
     "old": {
-        "_id": "5d23fb5d983a862c89871a38"
+        "_id": "5d45b71599752dd7ea7bb2ed"
     },
     "new": {
-        "question_answer": "123"
+        "question_code": "for x in range(6):\n\tif x @@ 5: print(x)"
     }
 }
 
@@ -39,7 +39,7 @@ Content-Type: application/json
     "tags": ["operators", "loops", "if"],
     "difficulty": 2,
     "question_text": "What would make this print 5?",
-    "question_code": "for x in range(6):\n\tif x __ 5: print(x)",
+    "question_code": "for x in range(6):\n\tif x @@ 5: print(x)",
     "question_answer": ">=",
     "alternatives": [">=", "<=", "<", ">", "=="]
 }
@@ -49,5 +49,5 @@ Content-Type: application/json
 DELETE http://127.0.0.1:5000/api/v1/dropdown/5d4415f621c23ded5805fa4b
 
 ### GET SET
-GET http://localhost:5000/api/v1/dropdown/set/1?tags=operators,logic
+GET http://localhost:5000/api/v1/dropdown/set/2
 
