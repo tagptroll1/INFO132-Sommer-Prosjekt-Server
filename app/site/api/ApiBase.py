@@ -150,7 +150,7 @@ class ApiBaseSet(ApiBase):
         types = typing.get_type_hints(self.model)
 
         args = convert_args_value(types, args)
-        print(args)
+
         count = self.database.count(self.model.TABLE)
         if limit > count:
             return {"message": f"Limit too high, max is: {count}"}, 400
