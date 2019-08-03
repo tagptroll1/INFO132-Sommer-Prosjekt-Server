@@ -69,7 +69,7 @@ These endpoints also support queries for filtering questions.
 
 Support multiple queries  
 **Example:**  
-`GET /api/v1/dropdown/set/2?difficulty=2&tags=loops
+`GET /api/v1/dropdown/set/2?difficulty=2&tags=loops`
 
 Support lists in queries by seperating with `,`  
 **Example:**  
