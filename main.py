@@ -1,5 +1,7 @@
 import argparse
 
+from flask_restful import Resource
+
 from app.site.manager import Manager
 from app.site.api.dropdown_endpoint import endpoints as dropdown
 from app.site.api.fill_in_endpoint import endpoints as fill_in
@@ -19,10 +21,10 @@ parser.add_argument(
 )
 
 manager = Manager()
+  
+endpoints = (dropdown, fill_in, multi_choice, data_endpoint, questionset)
+manager.load_api_resources(endpoints)
 
 if __name__ == "__main__":
-    endpoints = (dropdown, fill_in, multi_choice, data_endpoint, questionset)
-    manager.load_api_resources(endpoints)
-
     args = parser.parse_args()
     manager.run(debug=args.production)
