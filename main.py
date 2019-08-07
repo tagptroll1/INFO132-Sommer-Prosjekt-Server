@@ -1,7 +1,5 @@
 import argparse
 
-from flask import Flask
-
 from app.site.manager import Manager
 from app.site.api.dropdown_endpoint import endpoints as dropdown
 from app.site.api.fill_in_endpoint import endpoints as fill_in
@@ -19,8 +17,7 @@ parser.add_argument(
     default=True
 )
 
-flask_app = Flask(__name__)
-manager = Manager(flask_app)
+manager = Manager()
 
 if __name__ == "__main__":
     endpoints = (dropdown, fill_in, multi_choice, data_endpoint)
