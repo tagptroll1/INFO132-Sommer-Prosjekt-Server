@@ -4,9 +4,9 @@ from typing import List, Optional
 class DataModel:
     TABLE = "data"
 
-    user_id: str
+    user: str
     question_id: str
     selected_answer: str
-    started_question: str  # string version of DateTime 
+    correct: bool
     ended_question: str  # string version of DateTime 
     
