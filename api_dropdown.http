@@ -12,7 +12,7 @@ Content-Type: application/json
         "_id": "5d45b71599752dd7ea7bb2ed"
     },
     "new": {
-        "question_code": "for x in range(6):\n\tif x @@ 5: print(x)"
+        "question_code": "for x in range(6):\n\tif x @@ 5: \n\t\tprint(x)"
     }
 }
 
