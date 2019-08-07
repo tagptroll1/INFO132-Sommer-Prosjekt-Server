@@ -1,0 +1,48 @@
+GET http://localhost:5000/api/v1/data
+
+###
+
+POST http://127.0.0.1:5000/api/v1/data
+Content-Type: application/json
+
+{
+    "user": "anon", 
+    "question_id": "5d45d79c77294b419c1d4d75", 
+    "selected_answer": "{True: 2}", 
+    "correct": true, 
+    "ended_question": "2019-08-07 14:42:54.890668"
+}
+
+###
+POST http://127.0.0.1:5000/api/v1/data
+Content-Type: application/json
+
+{
+    "user": "tpe044", 
+    "question_id": "5d45d79c77294b419c1d4d75", 
+    "selected_answer": "{True: 1}", 
+    "correct": false, 
+    "ended_question": "2019-08-07 14:42:54.890668"
+}
+
+###
+
+POST http://127.0.0.1:5000/api/v1/dataset
+Content-Type: application/json
+
+[
+    {
+        "user": "anon", 
+        "question_id": "5d45d79c77294b419c1d4d75", 
+        "selected_answer": "{True: 2}", 
+        "correct": true, 
+        "ended_question": "2019-08-07 14:42:54.890668"
+    },
+    {
+        "user": "tpe044", 
+        "question_id": "5d45d79c77294b419c1d4d75", 
+        "selected_answer": "{True: 1}", 
+        "correct": false, 
+        "ended_question": "2019-08-07 14:42:54.890668"
+    }
+]
