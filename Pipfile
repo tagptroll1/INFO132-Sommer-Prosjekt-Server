@@ -21,6 +21,6 @@ pymongo = "*"
 python_version = "3.7"
 
 [scripts]
-start = "python -m app"
-production = "python -m app --production"
+start = "python main.py"
+production = "python main.py --production"
 lint = "python -m flake8"
