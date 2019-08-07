@@ -13,14 +13,12 @@ flake8 = "*"
 flask = "*"
 flask-restful = "*"
 flask-cors = "*"
-gevent = "*"
-gevent-websocket = "*"
 pymongo = "*"
 
 [requires]
 python_version = "3.7"
 
 [scripts]
-start = "python -m app"
-production = "python -m app --production"
+start = "python main.py"
+production = "python - --production"
 lint = "python -m flake8"

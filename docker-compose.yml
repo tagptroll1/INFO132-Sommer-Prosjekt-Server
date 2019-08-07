@@ -1,0 +1,44 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:1.13.7
+    container_name: nginx
+    depends_on:
+      - web
+    networks:
+      - my-network
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - socket:/code/socket
+
+  web:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    image: flask:0.0.1
+    container_name: flask
+    depends_on:
+      - mongo
+    volumes:
+      - socket:/code/socket
+    environment: 
+      - MONGO_HOST=mongo
+    command: gunicorn -b 0.0.0.0:5000 --bind unix:socket/floppy.sock -w 2 main:manager
+    networks:
+      my-network:
+        aliases:
+          - flask-app
+  mongo:
+    image: "mongo:3.4.22"
+    container_name: mongo
+    networks:
+      my-network:
+        aliases:
+          - mongo
+volumes:
+  socket:
+
+networks:
+  my-network:

@@ -7,10 +7,10 @@ from flask_restful import Api
 from .database import MongoDb
 
 
-class Manager:
+class Manager(Flask):
     def __init__(self):
-        self.app = Flask(__name__)
-        self.api = Api(self.app)
+        super().__init__(__name__)
+        self.api = Api(self)
         self.db = MongoDb()
         self.log = logging.getLogger(__name__)
 
@@ -23,6 +23,3 @@ class Manager:
     def load_api_resources(self, endpoints):
         for endpoint in endpoints:
             self.add_from_dict(endpoint)
-
-    def run(self, debug):
-        self.app.run(debug=debug)
