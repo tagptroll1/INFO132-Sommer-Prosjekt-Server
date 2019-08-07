@@ -1,15 +1,13 @@
 import logging
 
-from flask import Flask
-
 from flask_restful import Api
 
 from .database import MongoDb
 
 
 class Manager:
-    def __init__(self):
-        self.app = Flask(__name__)
+    def __init__(self, app):
+        self.app = app
         self.api = Api(self.app)
         self.db = MongoDb()
         self.log = logging.getLogger(__name__)
@@ -25,8 +23,6 @@ class Manager:
             self.add_from_dict(endpoint)
 
     def run(self, debug):
-        if debug:
-            self.app.run(debug=debug)
-        else:
-            self.app.run(debug=debug, port=80, host="172.105.89.232")
+        self.app.run(debug=debug)
+
 

@@ -13,8 +13,6 @@ flake8 = "*"
 flask = "*"
 flask-restful = "*"
 flask-cors = "*"
-gevent = "*"
-gevent-websocket = "*"
 pymongo = "*"
 
 [requires]

@@ -1,0 +1,5 @@
+.todo
+Pipfile.lock
+README.md
+*.http
+.vscode
