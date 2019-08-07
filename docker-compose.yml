@@ -22,7 +22,7 @@ services:
     environment: 
       - MONGO_HOST=mongo
       - FLASK_APP=/code/app.main:manager
-    command: flask run --host=0.0.0.0
+    command: gunicorn -b 0.0.0.0:8000 app.main:manager
     networks:
       my-network:
         aliases:
