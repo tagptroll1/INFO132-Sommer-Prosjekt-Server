@@ -62,9 +62,8 @@ class MongoDb(object):
     @convert_id
     def find(self, table_name, **kwargs):
         table = self.db[table_name]
-        if kwargs:
-            return table.find(kwargs)
-        return table.find()
+        return table.find(kwargs)
+
 
     def insert_one(self, table_name, obj):
         table = self.db[table_name]

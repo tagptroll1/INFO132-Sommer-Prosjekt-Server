@@ -2,5 +2,5 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
-    "python.pythonPath": "/sbin/python"
+    "python.pythonPath": "C:\\Users\\Admin\\.virtualenvs\\INFO132-Sommer-Prosjekt-Server-pizvxIhY\\Scripts\\python.exe"
 }
