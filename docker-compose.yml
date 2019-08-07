@@ -21,8 +21,8 @@ services:
       - ./:/code/
     environment: 
       - MONGO_HOST=mongo
-      - FLASK_APP=/code/app.main:manager
-    command: gunicorn -b 0.0.0.0:8000 app.main:manager
+      - FLASK_APP=/code/main:manager
+    command: gunicorn -b 0.0.0.0:8000 main:manager
     networks:
       my-network:
         aliases:
