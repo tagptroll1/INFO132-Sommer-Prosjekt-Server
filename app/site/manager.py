@@ -25,4 +25,8 @@ class Manager:
             self.add_from_dict(endpoint)
 
     def run(self, debug):
-        self.app.run(debug=debug)
+        if debug:
+            self.app.run(debug=debug)
+        else:
+            self.app.run(debug=debug, port=80, host="172.105.89.232")
+
