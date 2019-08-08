@@ -1,6 +1,6 @@
 ### GET
 
-GET http://127.0.0.1:5000/api/v1/dropdown
+GET http://172.105.89.232/api/v1/dropdown
 
 ### PUT
 
