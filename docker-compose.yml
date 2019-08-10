@@ -9,6 +9,7 @@ services:
       - 5555:80
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    restart: unless-stopped
 
   flask:
     build: 
@@ -20,6 +21,8 @@ services:
     environment: 
       - MONGO_HOST=mongo
     command: gunicorn -b 0.0.0.0:8000 -w 2 main:manager
+    restart: unless-stopped
 
   mongo:
     image: mongo:3.4.22
+    restart: unless-stopped
