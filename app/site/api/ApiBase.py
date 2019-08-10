@@ -3,6 +3,7 @@ import typing
 from typing import Optional
 
 from app.decorators.api_decorators import json_serialize
+from app.decorators.protected import protected
 from app.site.exceptions import QuestionAlreadyExistsException
 
 from flask import request
@@ -60,6 +61,7 @@ class ApiBaseDefault(ApiBase):
         )
         return list(self.database.find(self.model.TABLE))
 
+    @protected
     @json_serialize
     def post(self):
         body = request.get_json()
@@ -93,12 +95,14 @@ class ApiBaseDefault(ApiBase):
         else:
             return {"message": "something went wrong"}, 500
 
+    @protected
     @json_serialize
     def delete(self):
         return {
             "message": f"Invalid request, use /{self.model.TABLE}/:id"
         }, 400
 
+    @protected
     @json_serialize
     def put(self):
         body = request.get_json()
@@ -130,6 +134,7 @@ class ApiBaseDefault(ApiBase):
 
 
 class ApiBaseById(ApiBase):
+    @protected
     @json_serialize
     def delete(self, id_):
         delete_result = self.database.delete(self.model.TABLE, _id=id_)
