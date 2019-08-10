@@ -1,6 +1,6 @@
 ### GET
 
-GET http://172.105.89.232/api/v1/dropdown
+GET http://localhost:5555/api/v1/dropdown
 
 ### PUT
 
@@ -18,16 +18,17 @@ Content-Type: application/json
 
 ### POST
 
-POST http://localhost/api/v1/dropdown
+POST http://localhost:5555/api/v1/dropdown
 Content-Type: application/json
+Authorization: bearer helloworld
 
 {
     "tags": ["operators", "logic"],
     "difficulty": 1,
-    "question_text": "What would make this True?",
-    "question_code": "result = 6 > 5 @@ (4 < 4 or 2 == 3 )",
-    "question_answer": "or",
-    "alternatives": ["and", "or", "==", "<="]
+    "question_text": "What would make var True?",
+    "question_code": "var = @@",
+    "question_answer": "1==1",
+    "alternatives": ["1==1", "2==1", "2!=2", "3==1"]
 }
 
 ### POST 2

@@ -1,6 +1,7 @@
 import typing
 
 from app.decorators.api_decorators import json_serialize
+from app.decorators.protected import protected
 from app.site.api.ApiBase import ApiBase, ApiBaseDefault, validate_body
 from app.site.exceptions import QuestionAlreadyExistsException
 from app.site.models.session_data import DataModel
@@ -16,6 +17,7 @@ class DataEndpoint(ApiBaseDefault):
 
 class DatasetEndpoint(ApiBase):
     """/api/v1/dataset"""
+    @protected
     @json_serialize
     def post(self):
         table = DataModel.TABLE
