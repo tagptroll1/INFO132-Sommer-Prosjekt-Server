@@ -1,6 +1,13 @@
 # Slangeuib REST API
 
 ## Installation
+### Docker
+* Install docker
+* Install docker-compose
+* Run `docker-compose up`  
+
+--------
+### Manual
 * Install [python 3.7](https://www.python.org/downloads/release/python-372/)
 * Install MongoDb 
   * [Windows](https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-4.0.11-signed.msi/download)
