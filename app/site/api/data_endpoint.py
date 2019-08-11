@@ -55,7 +55,12 @@ class DatasetEndpoint(ApiBase):
             self.manager.log.info(f"{table} dataentry was posted.")
         return response
 
+    @protected
+    @json_serialize
+    def delete(self):
+        self.database.drop_table(DataModel.TABLE)
 
+        
 endpoints = {
     "/api/v1/data": DataEndpoint,
     "/api/v1/dataset": DatasetEndpoint
