@@ -26,7 +26,7 @@ def protected(func):
         
         try:
             prefix, auth = auth_header.split(" ")
-        except AttributeError as err:
+        except (AttributeError, ValueError) as err:
             return {"message": "Forbidden"}, 403
 
         if prefix != "token" or auth != token:

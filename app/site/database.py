@@ -72,9 +72,10 @@ class MongoDb(object):
             raise QuestionAlreadyExistsException(
                 "Question already exists.")
 
-        table.insert_one(obj)
+        _id = table.insert_one(obj).inserted_id
+        obj["_id"] = _id
 
-        return True
+        return obj
 
     def edit(self, table_name, old, new):
         table = self.db[table_name]

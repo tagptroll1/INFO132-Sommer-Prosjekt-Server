@@ -1,3 +1,4 @@
+import os
 import typing
 
 from app.decorators.api_decorators import json_serialize
@@ -23,7 +24,6 @@ class DatasetEndpoint(ApiBase):
         table = DataModel.TABLE
         body = request.get_json()
 
-
         if not isinstance(body, list):
             return {"message": "body must be a list"}, 400
 
@@ -33,7 +33,10 @@ class DatasetEndpoint(ApiBase):
             types = typing.get_type_hints(DataModel)
             error_or_None = validate_body(entry, types)
             if error_or_None is not None:
-                return error_or_None
+                response.append ({
+                    "message": "error_or_none" + str(error_or_None)
+                })
+                continue
 
             try:
                 resp = self.database.insert_one(table, entry)
@@ -50,8 +53,10 @@ class DatasetEndpoint(ApiBase):
                 self.manager.log.info(
                     f"{table} post returned 500 | {e}"
                 )
-                return {"message": "Internal server error"}, 500
-
+                if os.environ.get("env") == "production":
+                    return {"message": "Internal server error"}, 500
+                else:
+                    return {"message": "Internal server error", "error": str(e)}, 500
             self.manager.log.info(f"{table} dataentry was posted.")
         return response
 

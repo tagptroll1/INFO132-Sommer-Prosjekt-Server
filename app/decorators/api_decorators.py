@@ -9,6 +9,8 @@ def json_serialize(func):
         return_value = func(*args, **kwargs)
 
         def convert_ObjectId(item):
+            if not isinstance(item, dict):
+                return item
             for key, value in item.items():
                 if isinstance(value, ObjectId):
                     item[key] = str(value)
