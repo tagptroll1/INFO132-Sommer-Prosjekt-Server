@@ -13,6 +13,8 @@ def get_query(kwargs):
     for key, value in kwargs.items():
         if isinstance(value, list):
             query[key] = {"$in": value}
+        elif isinstance(value, dict):
+            query[key] = value
         else:
             query[key] = {"$in": [value]}
     return query
@@ -93,7 +95,7 @@ class MongoDb(object):
         return new_updated
 
     def exists(self, table_name, **kwargs):
-        return self.count(table_name, **kwargs) > 0
+        return self.find_one(table_name, **kwargs)
 
     def map(self, table_name, func, **kwargs):
         ...

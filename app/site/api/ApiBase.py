@@ -75,7 +75,8 @@ class ApiBaseDefault(ApiBase):
         if error_or_None is not None:
             return error_or_None
 
-        body["type"] = self.model.TYPE
+        if hasattr(self.model, "TYPE"):
+            body["type"] = self.model.TYPE
 
         try:
             response = self.database.insert_one(

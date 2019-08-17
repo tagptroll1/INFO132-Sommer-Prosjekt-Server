@@ -1,8 +1,8 @@
-from typing import List
+from typing import Dict
 
 
 class QuestionFeedback:
     TABLE = "feedback"
 
     question_id: str
-    feedbacks: List
+    feedbacks: Dict
