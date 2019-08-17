@@ -1,1 +1,36 @@
-GET http://localhost:5000/api/v1/questions?multi_choice=2
+GET http://localhost:5000/api/v1/questions?dropdown=2&multichoice=2
+
+### 
+
+POST http://localhost:5000/api/v1/questions
+Content-Type: application/json
+Authorization: token bananas
+
+{
+    "tags": ["test"],
+    "difficulty": 4,
+    "question_text": "test test",
+    "question_code": "print(test)",
+    "question_answer": "test",
+    "alternatives": ["1", "2", "3", "test"],
+    "type": "multichoice"
+}
+
+###
+PUT http://localhost:5000/api/v1/questions
+Content-Type: application/json
+Authorization: token bananas
+
+{
+    "old": {
+        "_id": "5d57ebda656fba97852f8d1c"
+    },
+    "new": {
+        "question_answer": "=="
+    }
+}
+
+###
+
+DELETE http://localhost:5000/api/v1/questions/5d57fddd302dd7dee2439ccc
+Authorization: token bananas

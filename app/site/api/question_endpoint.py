@@ -61,9 +61,9 @@ class QuestionSet(ApiBase):
                 message = f"{table} amount too high, max is: {count}"
                 return {"message": message}, 400
 
-            # Todo apply filter args
             tmp = list(self.database.find("questions", type=table, **additional_args))
 
+            # TODO: seeded shuffle
             # Shuffle and extend so we can random results
             random.shuffle(tmp)
             questions.extend(tmp[:amount])
