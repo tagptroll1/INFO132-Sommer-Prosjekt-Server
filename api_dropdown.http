@@ -42,7 +42,7 @@ Authorization: token bananas
     "difficulty": 2,
     "question_text": "What would make this print 5?",
     "question_code": "for x in range(6):\n\tif x @@ 5: \n\t\tprint(x)",
-    "question_answer": ">=",
+    "question_answer": "==",
     "alternatives": ["<=", "<", ">", "=="]
 }
 
