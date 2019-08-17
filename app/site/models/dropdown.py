@@ -2,7 +2,8 @@ from typing import List
 
 
 class DropdownModel:
-    TABLE = "dropdown"
+    TABLE = "questions"
+    TYPE = "dropdown"
 
     tags: List
     difficulty: int

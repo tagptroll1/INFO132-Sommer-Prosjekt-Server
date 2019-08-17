@@ -1,6 +1,6 @@
 ### GET
 
-GET http://localhost:5555/api/v1/dropdown
+GET http://localhost:5000/api/v1/dropdown
 
 ### PUT
 
@@ -18,9 +18,9 @@ Content-Type: application/json
 
 ### POST
 
-POST http://localhost:5555/api/v1/dropdown
+POST http://localhost:5000/api/v1/dropdown
 Content-Type: application/json
-Authorization: bearer helloworld
+Authorization: token bananas
 
 {
     "tags": ["operators", "logic"],
@@ -35,19 +35,21 @@ Authorization: bearer helloworld
 
 POST http://127.0.0.1:5000/api/v1/dropdown
 Content-Type: application/json
+Authorization: token bananas
 
 {
     "tags": ["operators", "loops", "if"],
     "difficulty": 2,
     "question_text": "What would make this print 5?",
-    "question_code": "for x in range(6):\n\tif x @@ 5: print(x)",
+    "question_code": "for x in range(6):\n\tif x @@ 5: \n\t\tprint(x)",
     "question_answer": ">=",
-    "alternatives": [">=", "<=", "<", ">", "=="]
+    "alternatives": ["<=", "<", ">", "=="]
 }
 
 ### 
 
-DELETE http://127.0.0.1:5000/api/v1/dropdown/5d4415f621c23ded5805fa4b
+DELETE http://127.0.0.1:5000/api/v1/dropdown/5d57ea029f443260627e1772
+Authorization: token bananas
 
 ### GET SET
 GET http://localhost:5000/api/v1/dropdown/set/2

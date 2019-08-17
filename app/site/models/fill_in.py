@@ -1,7 +1,8 @@
 from typing import List, Optional
 
 class FillInModel:
-    TABLE = "fill_in"
+    TABLE = "questions"
+    TYPE = "fillin"
 
     tags: List
     difficulty: int

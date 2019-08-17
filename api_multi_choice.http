@@ -6,10 +6,11 @@ GET http://127.0.0.1:5000/api/v1/multi_choice
 
 PUT http://127.0.0.1:5000/api/v1/multi_choice
 Content-Type: application/json
+Authorization: token bananas
 
 {
     "old": {
-        "_id": "5d45d79e77294b419c1d4d76"
+        "_id": "5d57ebda656fba97852f8d1c"
     },
     "new": {
         "question_code": " for x in [1, 2, 3]: \n\tprint(x, end='')"
@@ -20,6 +21,7 @@ Content-Type: application/json
 
 POST http://127.0.0.1:5000/api/v1/multi_choice
 Content-Type: application/json
+Authorization: token bananas
 
 {
     "tags": ["dicts"],
@@ -34,6 +36,7 @@ Content-Type: application/json
 
 POST http://127.0.0.1:5000/api/v1/multi_choice
 Content-Type: application/json
+Authorization: token bananas
 
 {
     "tags": ["lists","loops"],
@@ -51,7 +54,8 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:5000/api/v1/multi_choice/5d3df83c9c7041a88fd8d0ef
+DELETE http://127.0.0.1:5000/api/v1/multi_choice/5d57ea1e9f443260627e1773
+Authorization: token bananas
 
 ### GET SET
 GET http://localhost:5000/api/v1/multi_choice/set/2

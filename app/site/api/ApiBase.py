@@ -59,7 +59,10 @@ class ApiBaseDefault(ApiBase):
         self.manager.log.info(
             f"All {self.model.TABLE} questions were requested."
         )
-        return list(self.database.find(self.model.TABLE))
+        query = {}
+        if hasattr(self.model, "TYPE"):
+            query["type"] = self.model.TYPE
+        return list(self.database.find(self.model.TABLE, **query))
 
     @protected
     @json_serialize
@@ -72,7 +75,7 @@ class ApiBaseDefault(ApiBase):
         if error_or_None is not None:
             return error_or_None
 
-        body["type"] = self.model.TABLE
+        body["type"] = self.model.TYPE
 
         try:
             response = self.database.insert_one(
@@ -87,7 +90,7 @@ class ApiBaseDefault(ApiBase):
             self.manager.log.info(
                 f"{self.model.TABLE} post returned 500 | {e}"
             )
-            return {"message": "Internal server error"}, 500
+            return {"message": f"Internal server error, {e}"}, 500
 
         self.manager.log.info(f"{self.model.TABLE} question was posted.")
         if response:
@@ -127,10 +130,18 @@ class ApiBaseDefault(ApiBase):
         if not self.database.exists(self.model.TABLE, **old_record):
             return {"message": "Question does not exist"}, 400
 
-        new_question = self.database.edit(
+        if hasattr(self.model, "TYPE"):
+            result = self.database.edit(
+                self.model.TABLE, 
+                old_record, 
+                new_record, 
+                type_=self.model.TYPE
+            )
+            if result is None:
+                return {"message": "Nothing changed, wrong endpoint?"}, 400
+        return self.database.edit(
             self.model.TABLE, old_record, new_record
         )
-        return new_question
 
 
 class ApiBaseById(ApiBase):
