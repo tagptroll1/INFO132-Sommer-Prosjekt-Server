@@ -5,7 +5,7 @@ from app.decorators.api_decorators import json_serialize
 from app.decorators.protected import protected
 from app.site.exceptions import QuestionAlreadyExistsException
 from app.site.models.feedback import Feedback as FeedbackModel
-from app.site.models.question_feedback import QuestionFeedback
+from app.site.models.question_feedback import QuestionFeedback as QuestionFeedbackModel
 
 
 from flask import request
@@ -37,16 +37,16 @@ class QuestionFeedback(ApiBase):
     @json_serialize
     def get(self):
         self.manager.log.info(
-            f"All {QuestionFeedback.TABLE} entires were requested."
+            f"All {QuestionFeedbackModel.TABLE} entires were requested."
         )
-        return list(self.database.find(QuestionFeedback.TABLE, question_id={"$exists": True}))
+        return list(self.database.find(QuestionFeedbackModel.TABLE, question_id={"$exists": True}))
 
     @protected
     @json_serialize
     def post(self):
         body = request.get_json()
 
-        types = typing.get_type_hints(QuestionFeedback)
+        types = typing.get_type_hints(QuestionFeedbackModel)
         error_or_None = validate_body(body, types)
 
         if error_or_None is not None:
@@ -55,7 +55,7 @@ class QuestionFeedback(ApiBase):
         doesnt_exist = []
         for answer, feedback_id in body["feedbacks"].items():
             id_ = feedback_id
-            if not self.database.exists(QuestionFeedback.TABLE, feedback_id=id_):
+            if not self.database.exists(QuestionFeedbackModel.TABLE, feedback_id=id_):
                 doesnt_exist.append(id_)
 
         if doesnt_exist:
@@ -68,20 +68,20 @@ class QuestionFeedback(ApiBase):
 
         try:
             response = self.database.insert_one(
-                QuestionFeedback.TABLE, body
+                QuestionFeedbackModel.TABLE, body
             )
         except QuestionAlreadyExistsException as e:
             self.manager.log.info(
-                f"{QuestionFeedback.TABLE} post returned 409 | {e}"
+                f"{QuestionFeedbackModel.TABLE} post returned 409 | {e}"
             )
             return {"message": str(e)}, 409
         except Exception as e:
             self.manager.log.info(
-                f"{QuestionFeedback.TABLE} post returned 500 | {e}"
+                f"{QuestionFeedbackModel.TABLE} post returned 500 | {e}"
             )
             return {"message": "Internal server error"}, 500
 
-        self.manager.log.info(f"{QuestionFeedback.TABLE} question was posted.")
+        self.manager.log.info(f"{QuestionFeedbackModel.TABLE} question was posted.")
         if response:
             return body, 201
         else:
@@ -92,8 +92,21 @@ class FeedbackSet(ApiBase):
     @json_serialize
     def post(self):
         body = request.get_json()
+        feedbacks = list(self.database.find("feedback", question_id=body))
+        response = []
+        for feedback in feedbacks:
+            q_feeds = feedback["feedbacks"]
+            ids = list(q_feeds.values())
+            q_feedbacks = list(self.database.find("feedback", feedback_id=ids))
 
-        return list(self.database.find("feedback", question_id=body))
+            resp = {"question_id": feedback["question_id"]}
+            for key, value in q_feeds.items():
+                for feed in q_feedbacks:
+                    if feed["feedback_id"] == value:
+                        resp[key] = feed["feedback"]
+            response.append(resp)
+
+        return response
 
 
 endpoints = {
