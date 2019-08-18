@@ -5,27 +5,27 @@ from app.site.models.multi_choice import MultiChoiceModel
 
 
 class MultiChoice(ApiBaseDefault):
-    """/multi_choice"""
+    """/multichoice"""
 
     model = MultiChoiceModel
 
 
 class MultiChoiceById(ApiBaseById):
-    """/multi_choice/<id>"""
+    """/multichoice/<id>"""
 
     model = MultiChoiceModel
 
 
 class MultiChoiceSet(ApiBaseSet):
-    """/multi_choice/set/<limit>"""
+    """/multichoice/set/<limit>"""
 
     model = MultiChoiceModel
 
 
 endpoints = {
-    "/api/v1/multi_choice": MultiChoice,
-    "/api/v1/multi_choice/<id_>": MultiChoiceById,
-    "/api/v1/multi_choice/set/<int:limit>": MultiChoiceSet,
+    "/api/v1/multichoice": MultiChoice,
+    "/api/v1/multichoice/<id_>": MultiChoiceById,
+    "/api/v1/multichoice/set/<int:limit>": MultiChoiceSet,
 }
 
 __slots__ = [endpoints]
