@@ -34,21 +34,19 @@ class FeedbackById(ApiBase):
 
 
 class QuestionFeedback(ApiBase):
-    model = QuestionFeedback
-
     @json_serialize
     def get(self):
         self.manager.log.info(
-            f"All {self.model.TABLE} entires were requested."
+            f"All {QuestionFeedback.TABLE} entires were requested."
         )
-        return list(self.database.find(self.model.TABLE, question_id={"$exists": True}))
+        return list(self.database.find(QuestionFeedback.TABLE, question_id={"$exists": True}))
 
     @protected
     @json_serialize
     def post(self):
         body = request.get_json()
 
-        types = typing.get_type_hints(self.model)
+        types = typing.get_type_hints(QuestionFeedback)
         error_or_None = validate_body(body, types)
 
         if error_or_None is not None:
@@ -57,7 +55,7 @@ class QuestionFeedback(ApiBase):
         doesnt_exist = []
         for answer, feedback_id in body["feedbacks"].items():
             id_ = feedback_id
-            if not self.database.exists(self.model.TABLE, feedback_id=id_):
+            if not self.database.exists(QuestionFeedback.TABLE, feedback_id=id_):
                 doesnt_exist.append(id_)
 
         if doesnt_exist:
@@ -70,20 +68,20 @@ class QuestionFeedback(ApiBase):
 
         try:
             response = self.database.insert_one(
-                self.model.TABLE, body
+                QuestionFeedback.TABLE, body
             )
         except QuestionAlreadyExistsException as e:
             self.manager.log.info(
-                f"{self.model.TABLE} post returned 409 | {e}"
+                f"{QuestionFeedback.TABLE} post returned 409 | {e}"
             )
             return {"message": str(e)}, 409
         except Exception as e:
             self.manager.log.info(
-                f"{self.model.TABLE} post returned 500 | {e}"
+                f"{QuestionFeedback.TABLE} post returned 500 | {e}"
             )
             return {"message": "Internal server error"}, 500
 
-        self.manager.log.info(f"{self.model.TABLE} question was posted.")
+        self.manager.log.info(f"{QuestionFeedback.TABLE} question was posted.")
         if response:
             return body, 201
         else:
