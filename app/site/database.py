@@ -8,13 +8,16 @@ from bson.objectid import ObjectId
 from pymongo import MongoClient
 
 
-TABLES = [
-    "multi_choice",
-    "dropdown",
-    "codesnippet",
-    "tracking",
-    "feedback"
-]
+def get_query(kwargs):
+    query = {}
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            query[key] = {"$in": value}
+        elif isinstance(value, dict):
+            query[key] = value
+        else:
+            query[key] = {"$in": [value]}
+    return query
 
 
 class MongoDb(object):
@@ -37,12 +40,12 @@ class MongoDb(object):
     @convert_id
     def delete(self, table_name: str, **kwargs) -> dict:
         table = self.db[table_name]
-        return table.delete_one(kwargs)
+        return table.delete_one(get_query(kwargs))
 
     @convert_id
     def delete_many(self, table_name: str, **kwargs) -> dict:
         table = self.db[table_name]
-        return table.delete_many(kwargs)
+        return table.delete_many(get_query(kwargs))
 
     def drop_table(self, table_name):
         try:
@@ -57,12 +60,12 @@ class MongoDb(object):
     @convert_id
     def find_one(self, table_name, **kwargs):
         table = self.db[table_name]
-        return table.find_one(kwargs)
+        return table.find_one(get_query(kwargs))
 
     @convert_id
     def find(self, table_name, **kwargs):
         table = self.db[table_name]
-        return table.find(kwargs)
+        return table.find(get_query(kwargs))
 
 
     def insert_one(self, table_name, obj):
@@ -77,10 +80,13 @@ class MongoDb(object):
 
         return obj
 
-    def edit(self, table_name, old, new):
+    def edit(self, table_name, old, new, type_=None):
         table = self.db[table_name]
         if old.get("_id"):
             old["_id"] = ObjectId(old["_id"])
+
+        if type_:
+            old["type"] = type_
 
         table.update_one(old, {"$set": new})
 
@@ -89,7 +95,7 @@ class MongoDb(object):
         return new_updated
 
     def exists(self, table_name, **kwargs):
-        return self.count(table_name, **kwargs) > 0
+        return self.find_one(table_name, **kwargs)
 
     def map(self, table_name, func, **kwargs):
         ...

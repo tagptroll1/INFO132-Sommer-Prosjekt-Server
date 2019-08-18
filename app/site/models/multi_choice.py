@@ -2,7 +2,8 @@ from typing import List
 
 
 class MultiChoiceModel:
-    TABLE = "multi_choice"
+    TABLE = "questions"
+    TYPE = "multichoice"
 
     tags: List
     difficulty: int
