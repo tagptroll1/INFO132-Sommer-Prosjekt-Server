@@ -140,6 +140,7 @@ class ApiBaseDefault(ApiBase):
             )
             if result is None:
                 return {"message": "Nothing changed, wrong endpoint?"}, 400
+            return result, 200
         return self.database.edit(
             self.model.TABLE, old_record, new_record
         )
