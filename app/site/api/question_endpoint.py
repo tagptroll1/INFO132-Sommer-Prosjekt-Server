@@ -1,4 +1,5 @@
 import random
+import typing
 
 from app.decorators.api_decorators import json_serialize
 from app.decorators.protected import protected
@@ -86,10 +87,60 @@ class QuestionSet(ApiBase):
                 return {"message": "Unrecognized question type"}, 400
 
             model = MODELS[body["type"]]
+
+            types = typing.get_type_hints(model)
+            error_or_None = validate_body(body, types)
+            
+            if error_or_None is not None:
+                return error_or_None, 400
+
             try:
                 return self.database.insert_one(model.TABLE, body)
             except QuestionAlreadyExistsException as e:
                 return {"message": str(e)}, 400
+        
+        assert isinstance(body, list)
+
+        errors = []
+        responses = []
+
+        for question in body:
+            if not question.get("type"):
+                errors.append({
+                    "message": f"type is a required field - question with text {question['question_text']} failed to store"
+                })
+                continue
+
+            if question.get("type") not in QUESTION_TYPES:
+                errors.append({
+                    "message": f"Unrecognized question type - question with id {question['question_text']} failed to store"
+                })
+                continue
+
+            model = MODELS[question["type"]]
+
+            types = typing.get_type_hints(model)
+            types["type"] = str
+            error_or_None = validate_body(question, types)
+            
+            if error_or_None is not None:
+                errors.append(error_or_None[0])
+                continue
+
+            try:
+                # Have to convert id as some conversion went bad here
+                result = self.database.insert_one(model.TABLE, question)
+                result["_id"] = str(result["_id"])
+                responses.append(result)
+            except QuestionAlreadyExistsException as e:
+                errors.append({"message": str(e)})
+        
+        if errors and responses:
+            return {"errors": errors, "responses": responses}, 200
+        elif errors and not responses:
+            return {"errors": errors}, 400
+        else:
+            return {"responses": responses}, 200
 
 
 class QuestionSetById(ApiBase):
