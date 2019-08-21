@@ -5,7 +5,7 @@ from app.decorators.api_decorators import json_serialize
 from app.decorators.protected import protected
 from app.site.api.ApiBase import ApiBase, ApiBaseDefault, validate_body
 from app.site.exceptions import QuestionAlreadyExistsException
-from app.site.models.session_data import DataModel
+from app.site.models.session_data import DataModel, QuestionDataModel
 
 from flask import request
 
@@ -21,44 +21,48 @@ class DatasetEndpoint(ApiBase):
     @protected
     @json_serialize
     def post(self):
-        table = DataModel.TABLE
         body = request.get_json()
 
-        if not isinstance(body, list):
-            return {"message": "body must be a list"}, 400
+        types = typing.get_type_hints(DataModel)
+        error_or_None = validate_body(body, types)
+        if error_or_None is not None:
+            return {
+                "message": f"{error_or_None} - body invalid"
+            }, 400
 
-        response = []
-
-        for entry in body:
-            types = typing.get_type_hints(DataModel)
-            error_or_None = validate_body(entry, types)
+        # Validate questions
+        types = typing.get_type_hints(QuestionDataModel)
+        questions = body["questions"]
+        errors = []
+        for question in questions:
+            error_or_None = validate_body(question, types)
             if error_or_None is not None:
-                response.append ({
-                    "message": "error_or_none" + str(error_or_None)
+                errors.append({
+                    "message": f"{error_or_None} - question invalid"
                 })
-                continue
 
-            try:
-                resp = self.database.insert_one(table, entry)
-                response.append(resp)
-            except QuestionAlreadyExistsException as e:
-                self.manager.log.info(
-                    f"{table} post returned 409 | {e}"
-                )
-                response.append(
-                    {"message": f"entry already exists",
-                    "entry": entry}
-                )
-            except Exception as e:
-                self.manager.log.info(
-                    f"{table} post returned 500 | {e}"
-                )
-                if os.environ.get("env") == "production":
-                    return {"message": "Internal server error"}, 500
-                else:
-                    return {"message": "Internal server error", "error": str(e)}, 500
-            self.manager.log.info(f"{table} dataentry was posted.")
-        return response
+        if errors:
+            return {"error": errors}, 400
+
+        try:
+            resp = self.database.insert_one(DataModel.TABLE, body)
+        except QuestionAlreadyExistsException as e:
+            self.manager.log.info(
+                f"{DataModel.TABLE} post returned 409 | {e}"
+            )
+            return {"message": f"entry already exists"}, 400
+
+        except Exception as e:
+            self.manager.log.info(
+                f"{DataModel.TABLE} post returned 500 | {e}"
+            )
+            if os.environ.get("env") == "production":
+                return {"message": "Internal server error"}, 500
+            else:
+                return {"message": "Internal server error", "error": str(e)}, 500
+        self.manager.log.info(f"{DataModel.TABLE} dataentry was posted.")
+
+        return resp
 
     @protected
     @json_serialize
