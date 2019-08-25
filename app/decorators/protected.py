@@ -1,5 +1,4 @@
 import os
-
 from functools import wraps
 
 from flask import request
@@ -23,10 +22,10 @@ def protected(func):
 
         if not auth_header:
             return {"message": "Forbidden"}, 403
-        
+
         try:
             prefix, auth = auth_header.split(" ")
-        except (AttributeError, ValueError) as err:
+        except (AttributeError, ValueError):
             return {"message": "Forbidden"}, 403
 
         if prefix != "token" or auth != token:

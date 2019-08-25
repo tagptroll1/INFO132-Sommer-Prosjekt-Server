@@ -1,6 +1,3 @@
-from typing import List
-
-
 class Feedback:
     TABLE = "feedback"
 

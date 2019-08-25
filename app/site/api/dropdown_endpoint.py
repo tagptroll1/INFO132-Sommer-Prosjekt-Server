@@ -21,10 +21,12 @@ class DropdownSet(ApiBaseSet):
 
     model = DropdownModel
 
+
 endpoints = {
     "/api/v1/dropdown": Dropdown,
     "/api/v1/dropdown/<id_>": DropdownById,
     "/api/v1/dropdown/set/<int:limit>": DropdownSet,
 }
+
 
 __slots__ = [endpoints]

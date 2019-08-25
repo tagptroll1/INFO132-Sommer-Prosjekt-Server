@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+
 class FillInModel:
     TABLE = "questions"
     TYPE = "fillin"

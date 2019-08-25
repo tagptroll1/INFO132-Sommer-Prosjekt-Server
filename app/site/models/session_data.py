@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 
 class DataModel:
@@ -8,15 +8,10 @@ class DataModel:
     start_time: str
     end_time: str
     questions: List
-        # List of
-        # question_id
-        # selected_answer
-        # correct
-        # time_spent
+
 
 class QuestionDataModel:
     question_id: str
     selected_answer: str
     correct: bool
-    time_spent: int # seconds
-    
+    time_spent: int  # seconds
