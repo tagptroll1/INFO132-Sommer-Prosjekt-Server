@@ -55,6 +55,11 @@ class QuestionSet(ApiBase):
 
             additional_args[key] = value
 
+        if not table_args:
+            tmp = list(self.database.find("questions", **additional_args))
+            random.shuffle(tmp)
+            return tmp, 200
+            
         for table, amount in table_args.items():
             amount = int(amount)
             count = self.database.count("questions", type=table)
