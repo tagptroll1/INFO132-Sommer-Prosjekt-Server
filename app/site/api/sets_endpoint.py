@@ -1,6 +1,6 @@
 from app.decorators.api_decorators import json_serialize
 from app.decorators.protected import protected
-from app.site.api.ApiBase import ApiBase, validate_body
+from app.site.api.ApiBase import ApiBase
 
 from flask import request
 
@@ -27,7 +27,7 @@ class QuestionSearchSet(ApiBase):
             return {"message": "No tags given"}, 400
 
         questions = list(self.database.find("questions", _id=ids))
-        
+
         results = []
         for question in questions:
             # Remove duplications

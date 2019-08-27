@@ -59,7 +59,10 @@ class DatasetEndpoint(ApiBase):
             if os.environ.get("env") == "production":
                 return {"message": "Internal server error"}, 500
             else:
-                return {"message": "Internal server error", "error": str(e)}, 500
+                return {
+                    "message": "Internal server error",
+                    "error": str(e)
+                }, 500
         self.manager.log.info(f"{DataModel.TABLE} dataentry was posted.")
 
         return resp
@@ -69,7 +72,7 @@ class DatasetEndpoint(ApiBase):
     def delete(self):
         self.database.drop_table(DataModel.TABLE)
 
-        
+
 endpoints = {
     "/api/v1/data": DataEndpoint,
     "/api/v1/dataset": DatasetEndpoint

@@ -6,8 +6,8 @@ from app.decorators.protected import protected
 from app.site.api.ApiBase import ApiBase, validate_body
 from app.site.exceptions import QuestionAlreadyExistsException
 from app.site.models.dropdown import DropdownModel
-from app.site.models.multi_choice import MultiChoiceModel
 from app.site.models.fill_in import FillInModel
+from app.site.models.multi_choice import MultiChoiceModel
 
 from flask import request
 
@@ -23,7 +23,7 @@ MODELS = {
 class QuestionSet(ApiBase):
     """
     /questions
-    
+
     Returns nothing initially, requires queries to specify amount of questions
     ?dropdown=amount
     ?multi_choice=amount
@@ -37,11 +37,10 @@ class QuestionSet(ApiBase):
         )
 
         args = dict(request.args)
-        
+
         questions = []
         table_args = {}
         additional_args = {}
-        
 
         for key, value in args.items():
             if key in QUESTION_TYPES:
@@ -60,11 +59,11 @@ class QuestionSet(ApiBase):
         if not table_args:
             tmp = list(self.database.find("questions", **additional_args))
             random.shuffle(tmp)
-            
+
             if limit:
                 return tmp[:limit], 200
             return tmp, 200
-            
+
         for table, amount in table_args.items():
             amount = int(amount)
             count = self.database.count("questions", type=table)
@@ -72,7 +71,13 @@ class QuestionSet(ApiBase):
                 message = f"{table} amount too high, max is: {count}"
                 return {"message": message}, 400
 
-            tmp = list(self.database.find("questions", type=table, **additional_args))
+            tmp = list(
+                self.database.find(
+                    "questions",
+                    type=table,
+                    **additional_args
+                )
+            )
 
             # TODO: seeded shuffle
             # Shuffle and extend so we can random results
@@ -90,8 +95,10 @@ class QuestionSet(ApiBase):
         if not isinstance(body, list):
             if not body.get("type"):
                 return {
-                    "message": "type is a required field when using this endpoint"
-                    }, 400
+                    "message": (
+                        "type is a required field when using this endpoint"
+                    )
+                }, 400
 
             if body.get("type") not in QUESTION_TYPES:
                 return {"message": "Unrecognized question type"}, 400
@@ -100,7 +107,7 @@ class QuestionSet(ApiBase):
 
             types = typing.get_type_hints(model)
             error_or_None = validate_body(body, types)
-            
+
             if error_or_None is not None:
                 return error_or_None, 400
 
@@ -108,7 +115,7 @@ class QuestionSet(ApiBase):
                 return self.database.insert_one(model.TABLE, body)
             except QuestionAlreadyExistsException as e:
                 return {"message": str(e)}, 400
-        
+
         assert isinstance(body, list)
 
         errors = []
@@ -117,13 +124,19 @@ class QuestionSet(ApiBase):
         for question in body:
             if not question.get("type"):
                 errors.append({
-                    "message": f"type is a required field - question with text {question['question_text']} failed to store"
+                    "message": (
+                        "type is a required field - question with text "
+                        f"{question['question_text']} failed to store"
+                    )
                 })
                 continue
 
             if question.get("type") not in QUESTION_TYPES:
                 errors.append({
-                    "message": f"Unrecognized question type - question with id {question['question_text']} failed to store"
+                    "message": (
+                        "Unrecognized question type - question with id "
+                        f"{question['question_text']} failed to store"
+                    )
                 })
                 continue
 
@@ -132,7 +145,7 @@ class QuestionSet(ApiBase):
             types = typing.get_type_hints(model)
             types["type"] = str
             error_or_None = validate_body(question, types)
-            
+
             if error_or_None is not None:
                 errors.append(error_or_None[0])
                 continue
@@ -144,7 +157,7 @@ class QuestionSet(ApiBase):
                 responses.append(result)
             except QuestionAlreadyExistsException as e:
                 errors.append({"message": str(e)})
-        
+
         if errors and responses:
             return {"errors": errors, "responses": responses}, 200
         elif errors and not responses:

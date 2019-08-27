@@ -67,7 +67,6 @@ class MongoDb(object):
         table = self.db[table_name]
         return table.find(get_query(kwargs))
 
-
     def insert_one(self, table_name, obj):
         table = self.db[table_name]
 

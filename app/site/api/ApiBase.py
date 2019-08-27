@@ -10,13 +10,14 @@ from flask import request
 
 from flask_restful import Resource
 
+
 def convert_args_value(types, args):
     new_args = {}
     for key, value in args.items():
         type_ = types[key]
 
         # The value is already a str, so don't have to check that
-        if type_ is int or type_ is bool: 
+        if type_ is int or type_ is bool:
             new_args[key] = types[key](value)
         # Seperate value by commas if it's a list.
         elif "," in value:
@@ -26,13 +27,18 @@ def convert_args_value(types, args):
 
     return new_args
 
+
 def validate_body(body, types, post=True):
     for var, type_ in types.items():
         if post and type_ != Optional and var not in body:
             return {"message": f"{var} is a required field!"}, 400
 
         for key, value in body.items():
-            if var == key and type_ != Optional and not isinstance(value, type_):
+            if (
+                var == key
+                and type_ != Optional
+                and not isinstance(value, type_)
+            ):
                 return {
                     "message": (
                         f"{var} must be of type {type_} not {type(value)}"
@@ -133,9 +139,9 @@ class ApiBaseDefault(ApiBase):
 
         if hasattr(self.model, "TYPE"):
             result = self.database.edit(
-                self.model.TABLE, 
-                old_record, 
-                new_record, 
+                self.model.TABLE,
+                old_record,
+                new_record,
                 type_=self.model.TYPE
             )
             if result is None:

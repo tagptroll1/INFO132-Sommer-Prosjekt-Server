@@ -1,14 +1,16 @@
 import typing
 
-from .ApiBase import ApiBase, ApiBaseDefault, ApiBaseById, validate_body
 from app.decorators.api_decorators import json_serialize
 from app.decorators.protected import protected
 from app.site.exceptions import QuestionAlreadyExistsException
 from app.site.models.feedback import Feedback as FeedbackModel
-from app.site.models.question_feedback import QuestionFeedback as QuestionFeedbackModel
-
+from app.site.models.question_feedback import (
+    QuestionFeedback as QuestionFeedbackModel
+)
 
 from flask import request
+
+from .ApiBase import ApiBase, ApiBaseDefault, validate_body
 
 
 class Feedback(ApiBaseDefault):
@@ -39,7 +41,12 @@ class QuestionFeedback(ApiBase):
         self.manager.log.info(
             f"All {QuestionFeedbackModel.TABLE} entires were requested."
         )
-        return list(self.database.find(QuestionFeedbackModel.TABLE, question_id={"$exists": True}))
+        return list(
+            self.database.find(
+                QuestionFeedbackModel.TABLE,
+                question_id={"$exists": True}
+            )
+        )
 
     @protected
     @json_serialize
@@ -55,12 +62,16 @@ class QuestionFeedback(ApiBase):
         doesnt_exist = []
         for answer, feedback_id in body["feedbacks"].items():
             id_ = feedback_id
-            if not self.database.exists(QuestionFeedbackModel.TABLE, feedback_id=id_):
+            if not self.database.exists(
+                QuestionFeedbackModel.TABLE,
+                feedback_id=id_
+            ):
                 doesnt_exist.append(id_)
 
         if doesnt_exist:
+            msg = ", ".join(doesnt_exist)
             return {
-                "message": f'[{", ".join(doesnt_exist)}] feedback ids dont exist'
+                "message": f'[{msg}] feedback ids dont exist'
             }, 400
 
         if not self.database.exists("questions", _id=body["question_id"]):
@@ -81,7 +92,9 @@ class QuestionFeedback(ApiBase):
             )
             return {"message": "Internal server error"}, 500
 
-        self.manager.log.info(f"{QuestionFeedbackModel.TABLE} question was posted.")
+        self.manager.log.info(
+            f"{QuestionFeedbackModel.TABLE} question was posted."
+        )
         if response:
             return body, 201
         else:
