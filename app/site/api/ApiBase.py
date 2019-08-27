@@ -35,9 +35,9 @@ def validate_body(body, types, post=True):
 
         for key, value in body.items():
             if (
-                var == key and
-                type_ != Optional and
-                not isinstance(value, type_)
+                var == key
+                and type_ != Optional
+                and not isinstance(value, type_)
             ):
                 return {
                     "message": (
