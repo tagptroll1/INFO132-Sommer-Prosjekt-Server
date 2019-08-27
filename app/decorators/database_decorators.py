@@ -16,9 +16,15 @@ def convert_id(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if kwargs.get("_id"):
-            kwargs["_id"] = ObjectId(kwargs["_id"])
+            if isinstance(kwargs["_id"], list):
+                kwargs["_id"] = [ObjectId(id_) for id_ in kwargs["_id"]]
+            else:
+                kwargs["_id"] = ObjectId(kwargs["_id"])
         elif kwargs.get("id"):
-            kwargs["_id"] = ObjectId(kwargs["id"])
+            if isinstance(kwargs["id"], list):
+                kwargs["_id"] = [ObjectId(id_) for id_ in kwargs["id"]]
+            else:
+                kwargs["_id"] = ObjectId(kwargs["id"])
             del kwargs["id"]
 
         return func(*args, **kwargs)

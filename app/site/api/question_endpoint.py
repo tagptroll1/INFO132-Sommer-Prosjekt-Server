@@ -54,9 +54,14 @@ class QuestionSet(ApiBase):
 
             additional_args[key] = value
 
+        limit = additional_args.pop("limit", None)
+
         if not table_args:
             tmp = list(self.database.find("questions", **additional_args))
             random.shuffle(tmp)
+
+            if limit:
+                return tmp[:limit], 200
             return tmp, 200
 
         for table, amount in table_args.items():

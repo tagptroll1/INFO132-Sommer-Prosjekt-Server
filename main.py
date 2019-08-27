@@ -6,6 +6,7 @@ from app.site.api.feedback_endpoint import endpoints as feedback_endpoint
 from app.site.api.fill_in_endpoint import endpoints as fill_in
 from app.site.api.multi_choice_endpoint import endpoints as multi_choice
 from app.site.api.question_endpoint import endpoints as questionset
+from app.site.api.sets_endpoint import endpoints as set_endpoint
 from app.site.manager import Manager
 
 parser = argparse.ArgumentParser(
@@ -22,12 +23,13 @@ parser.add_argument(
 manager = Manager()
 
 endpoints = (
+    data_endpoint,
     dropdown,
+    feedback_endpoint,
     fill_in,
     multi_choice,
-    data_endpoint,
+    set_endpoint,
     questionset,
-    feedback_endpoint
 )
 manager.load_api_resources(endpoints)
 
