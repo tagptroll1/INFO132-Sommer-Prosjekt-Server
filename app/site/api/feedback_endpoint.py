@@ -11,8 +11,20 @@ from app.site.models.question_feedback import QuestionFeedback as QuestionFeedba
 from flask import request
 
 
-class Feedback(ApiBaseDefault):
+class Feedback(ApiBase):
+    # Overwrite post with helperclass post, but requires model.
     model = FeedbackModel
+    post = ApiBaseDefault.post
+    put = ApiBaseDefault.put
+
+    @json_serialize
+    def get(self):
+        getted = self.database.find(
+            FeedbackModel.TABLE, feedback_id={"$exists": True}
+        )
+        if getted:
+            return list(getted), 200
+        return [], 204
 
 
 class FeedbackById(ApiBase):
