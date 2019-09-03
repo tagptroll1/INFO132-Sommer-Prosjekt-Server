@@ -75,7 +75,7 @@ class QuestionFeedback(ApiBase):
 
     @protected
     @json_serialize
-    def put(self):
+    def patch(self):
         body = request.get_json()
 
         types = typing.get_type_hints(QuestionFeedbackModel)
