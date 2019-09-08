@@ -2,6 +2,6 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": false,
     "python.linting.enabled": true,
-    "python.pythonPath": "C:\\Users\\Admin\\.virtualenvs\\INFO132-Sommer-Prosjekt-Server-pizvxIhY\\Scripts\\python.exe",
+    "python.pythonPath": "/home/thomas/.local/share/virtualenvs/sommerprosjekt-server-3qEWhFwT/bin/python",
     "python.linting.pep8Enabled": true
 }
