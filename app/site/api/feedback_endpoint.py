@@ -48,6 +48,79 @@ class QuestionFeedback(ApiBase):
             )
         )
 
+    def validate_set(self, body):
+        doesnt_exist = []
+        if body.get("feedbacks"):
+            for answer, feedback_id in body["feedbacks"].items():
+                id_ = feedback_id
+                if not self.database.exists(
+                    QuestionFeedbackModel.TABLE,
+                    feedback_id=id_
+                ):
+                    doesnt_exist.append(id_)
+
+        if doesnt_exist:
+            msg = ", ".join(doesnt_exist)
+            return {
+                "message": f'[{msg}] feedback ids dont exist'
+            }
+
+        if body.get("question_id"):
+            if not self.database.exists(
+                "questions", _id=body["question_id"]
+            ):
+                return {"message": "Question does not exist"}
+
+        return True
+
+    @protected
+    @json_serialize
+    def patch(self):
+        body = request.get_json()
+
+        types = typing.get_type_hints(QuestionFeedbackModel)
+        error_or_None = validate_body(body["new"], types, post=False)
+
+        if error_or_None is not None:
+            return error_or_None
+
+        valid_set = self.validate_set(body["new"])
+        if valid_set is not True:
+            return valid_set
+
+        id_ = body.get("_id")
+        new_record = body.get("new")
+
+        if not id_:
+            return {"message": "json body does not contain key `_id`"}, 400
+
+        if not new_record:
+            return {"message": "json body does not contain key `new`"}, 400
+
+        if not self.database.exists(QuestionFeedbackModel.TABLE, _id=id_):
+            return {"message": "Question does not exist"}, 400
+
+        if new_record.get("feedbacks"):
+            new_feedbacks = new_record["feedbacks"]
+            old_record = self.database.find_one(
+                QuestionFeedbackModel.TABLE, _id=id_
+            )
+            feedbacks = {**old_record["feedbacks"], **new_feedbacks}
+            result = self.database.edit(
+                QuestionFeedbackModel.TABLE,
+                {"_id": id_},
+                {"feedbacks": feedbacks},
+            )
+        else:
+            result = self.database.edit(
+                QuestionFeedbackModel.TABLE,
+                {"_id": id_},
+                new_record,
+            )
+        if result is None:
+            return {"message": "Nothing changed, wrong endpoint?"}, 400
+        return result, 200
+
     @protected
     @json_serialize
     def post(self):
@@ -59,23 +132,9 @@ class QuestionFeedback(ApiBase):
         if error_or_None is not None:
             return error_or_None
 
-        doesnt_exist = []
-        for answer, feedback_id in body["feedbacks"].items():
-            id_ = feedback_id
-            if not self.database.exists(
-                QuestionFeedbackModel.TABLE,
-                feedback_id=id_
-            ):
-                doesnt_exist.append(id_)
-
-        if doesnt_exist:
-            msg = ", ".join(doesnt_exist)
-            return {
-                "message": f'[{msg}] feedback ids dont exist'
-            }, 400
-
-        if not self.database.exists("questions", _id=body["question_id"]):
-            return {"message": "Question does not exist"}, 400
+        valid_set = self.validate_set(body)
+        if valid_set is not True:
+            return valid_set
 
         try:
             response = self.database.insert_one(
