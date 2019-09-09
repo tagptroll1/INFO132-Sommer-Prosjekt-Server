@@ -8,15 +8,17 @@ from app.site.exceptions import QuestionAlreadyExistsException
 from app.site.models.dropdown import DropdownModel
 from app.site.models.fill_in import FillInModel
 from app.site.models.multi_choice import MultiChoiceModel
+from app.site.models.question_line import QuestionLineModel
 
 from flask import request
 
 
-QUESTION_TYPES = ["dropdown", "multichoice", "fillin"]
+QUESTION_TYPES = ["dropdown", "multichoice", "fillin", "questionline"]
 MODELS = {
     "dropdown": DropdownModel,
     "multichoice": MultiChoiceModel,
     "fillin": FillInModel,
+    "questionline": QuestionLineModel,
 }
 
 
